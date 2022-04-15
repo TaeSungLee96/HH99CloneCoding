@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const fs = require("fs");
-const pw = fs.readFileSync(__dirname + "/key.txt").toString();
+const pw = fs.readFileSync(__dirname + "/pw.txt").toString();
 
 const connect = () => {
   mongoose
