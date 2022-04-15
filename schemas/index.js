@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
+const fs = require("fs");
+const pw = fs.readFileSync(__dirname + "/key.txt").toString();
 
 const connect = () => {
   mongoose
     .connect(
-      "mongodb+srv://hanghae78952:clonecoding@cluster0.gnxiz.mongodb.net/cloneCoding?retryWrites=true&w=majority",
+      `mongodb+srv://hanghae78952:${pw}@cluster0.gnxiz.mongodb.net/cloneCoding?retryWrites=true&w=majority`,
       { ignoreUndefined: true }
     )
     .catch((err) => {
