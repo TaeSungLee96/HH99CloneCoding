@@ -21,7 +21,7 @@ const UsersSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-   userDong: {
+  userDong: {
     type: String,
     required: true,
   },
@@ -29,7 +29,7 @@ const UsersSchema = mongoose.Schema({
   userImage: {
     type: String,
     required: true,
-  }
+  },
 });
 
 module.exports = mongoose.model("Users", UsersSchema);
