@@ -1,15 +1,13 @@
 const express = require("express");
 const connect = require("./schemas/index");
 connect();
-const Article = require("./schemas/articles"); // 테스트용 DB연결
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const app = express();
 const port = 3000;
-
-// 라우터 불러오기
-// const articleRouter = require("./routers/articles");
-// const userRouter = require("./routers/users");
+const mainRouter =  require("./routes/main")
+const userRouter =  require("./routes/user")
+const articleRouter =  require("./routes/article")
 
 // 접속 로그 남기기
 const requestMiddleware = (req, res, next) => {
@@ -35,18 +33,12 @@ app.use(requestMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("uploads"));
 
-app.post("/test", async (req, res) => {
-  await Article.create({
-    articleNum: 333,
-    articleDesc: "이태성",
-  });
 
-  res.send("DB설정완료");
-});
+//라우터 연결
+app.use("/main", [mainRouter]);
+app.use("/user", [userRouter]);
+app.use("/article", [articleRouter])
 
-// 라우터 연결
-// app.use("/api", [articleRouter]);
-// app.use("/user", [userRouter]);
 
 // 서버 열기
 app.listen(port, () => {
