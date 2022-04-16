@@ -1,6 +1,6 @@
 const express = require('express')
-const Likes = require('../schemas/')
-const Articles = require('../schemas/')
+const Likes = require('../schemas')
+const Articles = require('../schemas')
 const router = express.Router();
 //const authmiddleware = require("../middle/auth-middlewares");
 

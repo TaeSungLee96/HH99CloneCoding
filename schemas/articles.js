@@ -1,41 +1,48 @@
 const mongoose = require("mongoose");
 
-const articleSchema = mongoose.Schema({
-  articleNum: {
+const articlesSchema = mongoose.Schema({
+  // Article
+
+  articleNumber: {
     type: Number,
     required: true,
   },
-  articleDesc: {
+  userId: {
+    type: String,
+    required: true
+  },
+  userNickname: {
+    type: String,
+    required: true
+  },
+   userGu: {
     type: String,
     required: true,
   },
-  //   articleThumb: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   articleDate: {
-  //     type: Date,
-  //     required: true,
-  //   },
-  //   articleLikeNum: {
-  //     type: Number,
-  //     required: true,
-  //   },
-  //   articleCommentNum: {
-  //     type: Number,
-  //     required: true,
-  //   },
-  //   articleKind: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   userId: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   userInfo: {
-  //     type: Object,
-  //   },
+   userDong: {
+    type: String,
+    required: true,
+  },
+  articleTitle: {
+    type: String,
+    required: true, 
+  },
+ articleContent: {
+    type: String,
+    required: true
+  },    
+  articleCreatedAt: {
+    type: String,
+    required: true,
+  },
+  articleImageUrl: {
+    type: String,
+    required: true
+  },
+  articlePrice: {
+    type: String,
+    required: true
+  },
 });
 
-module.exports = mongoose.model("article", articleSchema);
+module.exports = mongoose.model("articles", articlesSchema);
