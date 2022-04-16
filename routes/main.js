@@ -5,7 +5,7 @@ const Users = require("../schemas/Users"); //Users DB 연결하기
 
 const fs = require("fs");
 const initProfile = fs.readFileSync(__dirname + "/initProfile.txt").toString(); // 프로필 사진 초기값 불러오기
-const myKey = fs.readFileSync(__dirname + "/myKey.txt").toString(); // 토큰 시크릿 키값 불러오기
+const myKey = fs.readFileSync(__dirname + "/key.txt").toString(); // 토큰 시크릿 키값 불러오기
 
 // 회원가입
 router.post(

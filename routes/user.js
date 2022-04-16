@@ -3,7 +3,7 @@ const router = express.Router();
 const Users = require("../schemas/Users"); //Users DB 연결하기
 
 const fs = require("fs");
-const myKey = fs.readFileSync(__dirname + "/myKey.txt").toString(); // 토큰 시크릿 키값 불러오기
+const myKey = fs.readFileSync(__dirname + "/key.txt").toString(); // 토큰 시크릿 키값 불러오기
 const multipart = require("connect-multiparty"); // 사진data 핸들링 라이브러리
 const imgMiddleware = multipart();
 const authMiddleware = require("../middleware/authMiddleware"); // 인증미들웨어

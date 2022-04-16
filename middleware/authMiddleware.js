@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Users = require("../schemas/Users");
 const fs = require("fs");
-const myKey = fs.readFileSync(__dirname + "/../routes/mykey.txt").toString();
+const myKey = fs.readFileSync(__dirname + "/../routes/key.txt").toString();
 
 module.exports = (req, res, next) => {
   const Token = req.headers.authorization; // authorization은 FE가 헤더에 실은 key이름에 따라 변동 되어야함.
