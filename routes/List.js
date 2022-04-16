@@ -6,7 +6,7 @@ const router = express.Router();
 //const authmiddleware = require("../middle/auth-middlewares");
 
 //사용자위치 기반  article
-router.get('/list',async(req,res)=>{
+router.get('/list',authmiddleware,async(req,res)=>{
     try{ 
         //유저위치기반  조회
          const{ user }= res.locals;
@@ -62,10 +62,10 @@ router.get('/list',async(req,res)=>{
              if (option) {
               //정규식(item키값은 밸류 req.qurey.item설정)
               option = [ { articleNumber: new RegExp(keyword) },
-                /*  {  userGu:user.userGu },
-                 {  userDong:user.userDong } */];
+                  {  userGu:new RegExp(user.userGu) },
+                 {  userDong:new RegExp(user.userDong) } ];
              } 
-             console.log(option)
+             //db에서 검색
              const Srech = await Articles.aggregate([
                  {$match: {$or:option}  
                  },
@@ -138,7 +138,7 @@ router.get('/list/:articleNumber',async(req,res)=>{
 })
 
 //좋아요 추가,삭제
-router.post('/like',async(req,res)=>{
+router.post('/like',authmiddleware,async(req,res)=>{
     try{
         //유저 정보 받기
         const{user}=res.locals;
