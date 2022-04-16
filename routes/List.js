@@ -148,7 +148,7 @@ router.post('/like',authmiddleware,async(req,res)=>{
         const{articleNumber}=req.body;
         //사용유자가 같은 상품에 좋아요를 했는지 확인
         const like = await Likes.find({articleNumber,userId:user.userId});
-        if(Object.keys(like).length > 0){
+        if(like){
             //일치하는 갚은 있으면 삭제
             await Likes.deleteOne({ articleNumber,userId:user.userId });
             //남은 개수
