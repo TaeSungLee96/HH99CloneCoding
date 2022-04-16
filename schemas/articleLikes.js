@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const articlelikesSchema = mongoose.Schema({
+const ArticlelikesSchema = mongoose.Schema({
 
     // ArticleLikes
  
@@ -15,4 +15,4 @@ articleNumber: {
 
 });
 
-module.exports = mongoose.model("articlelikes", articlelikesSchema);
+module.exports = mongoose.model("Articlelikes", ArticlelikesSchema);
