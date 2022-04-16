@@ -37,8 +37,8 @@ app.use(express.static("uploads"));
 
 app.post("/test", async (req, res) => {
   await Article.create({
-    articleNum: 1,
-    articleDesc: "설명",
+    articleNum: 2,
+    articleDesc: "추가",
   });
 
   res.send("DB설정완료");
