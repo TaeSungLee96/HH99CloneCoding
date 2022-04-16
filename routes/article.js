@@ -6,6 +6,7 @@ const Users = require("../schemas/users");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 const moment = require("moment");
+const authMiddleware = require("../middleware/authMiddleware");
 
 
 router.use(express.json()); 
@@ -19,10 +20,10 @@ router.get("/", (req, res) =>{
 
 //게시글 저장
 router.post("/add", async (req, res) => {
-  let { articleTitle, articleContent, articleImageUrl, articlePrice  } = req.body;
-  //let { userId, userNickname, userGu, userDong } = req.headers; 전역변수로 받을 예정
-  let article =  Articles.find();
-  let articleNumber = await article.countDocuments() + 1
+  const { articleTitle, articleContent, articleImageUrl, articlePrice  } = req.body;
+  //const { userId, userNickname, userGu, userDong } = res.locals.userDB; //전역변수로 받을 예정
+  const article =  Articles.find();
+  const articleNumber = await article.countDocuments() + 1
   const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss")
  
   const createPosting = await Posting.create({articleTitle, articleContent ,articleImageUrl, articlePrice, userId, userNickname, userGu, userDong, articleNumber, articleCreatedAt});
@@ -36,7 +37,8 @@ router.post("/add", async (req, res) => {
 
 //포스팅 삭제
 router.delete("delete/:articleNumber", async (req, res) => {  
-  //let { userId } = req.headers; 전역변수로 받을 예정
+  //const { userId } = res.locals.userDB; //전역변수로 받을 예정
+  //const article =  Articles.find();
   const articleNumber = req.params;
   const existsArticles = await Articles.findOne({ articleNumber });
   const DBuserId = existsArticles.userId;
@@ -52,7 +54,7 @@ router.delete("delete/:articleNumber", async (req, res) => {
 
 //포스팅 수정
 router.post("/edit/:articleNumber", async (req, res) => {  
-  //let { userId } = req.headers; 전역변수로 받을 예정
+  //const { userId } = res.locals.userDB; //전역변수로 받을 예정
   const articleNumber = req.params;
   let { articleTitle, articleContent, articleImageUrl, articlePrice  } = req.body;
   const existsArticles = await Articles.findOne({ articleNumber });
@@ -67,9 +69,9 @@ router.post("/edit/:articleNumber", async (req, res) => {
 });
 
 router.get("/edit/:articleNumber", async (req, res) => { 
+    const { userId } = res.locals.userDB; //전역변수로 받을 예정
     const articleNumber = req.params;
     const existsArticles = await Articles.findOne({ articleNumber });
-    //const { userId } = req.headers;  전역변수로 받을 예정
     const existsUsers = await Users.findOne({userId})
     const userImage = existsUsers.userImage
     res.json({ existsArticles, userImage});
