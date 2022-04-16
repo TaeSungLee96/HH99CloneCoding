@@ -5,9 +5,10 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const app = express();
 const port = 3000;
-const mainRouter =  require("./routes/main")
+/* const mainRouter =  require("./routes/main")
 const userRouter =  require("./routes/user")
-const articleRouter =  require("./routes/article")
+const articleRouter =  require("./routes/article") */
+const listRouter = require('./routes/List')
 
 // 접속 로그 남기기
 const requestMiddleware = (req, res, next) => {
@@ -34,9 +35,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static("uploads"));
 
 //라우터 연결
-app.use("/main", [mainRouter]);
+/* app.use("/main", [mainRouter]);
 app.use("/user", [userRouter]);
-app.use("/article", [articleRouter])
+app.use("/article", [articleRouter]) */
+app.use("/article", [listRouter])
 
 
 // 서버 열기
