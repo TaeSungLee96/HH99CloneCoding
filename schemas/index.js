@@ -5,11 +5,12 @@ const pw = fs.readFileSync(__dirname + "/pw.txt").toString();
 const connect = () => {
   mongoose
     .connect(
-      `mongodb+srv://hanghae78952:${pw}@cluster0.gnxiz.mongodb.net/cloneCoding?retryWrites=true&w=majority`,
+      "mongodb+srv://hanghae78952:clonecoding@cluster0.hgnt4.mongodb.net/cloneCoding?retryWrites=true&w=majority",
       { ignoreUndefined: true }
     )
     .catch((err) => {
       console.error(err);
+      console.log("여기?");
     });
 };
 
