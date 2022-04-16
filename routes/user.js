@@ -20,8 +20,8 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     const userImage = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
 
     // 기존 토큰에서 userId 추출
-    const { user } = res.locals; // 인증미들웨어에서 제공하는 전역변수
-    const { userId } = user; // 유저Id
+    const user = res.locals.userDB; // 인증미들웨어에서 제공하는 전역변수
+    const userId = user.userId; // 유저Id
 
     // Users DB 업데이트
     await Users.updateOne(
