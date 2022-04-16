@@ -5,20 +5,20 @@ const router = express.Router();
 //const authmiddleware = require("../middle/auth-middlewares");
 
 //사용자위치 기반  article
-router.get('/',authmiddleware,async(req,res)=>{
+router.get('/',async(req,res)=>{
     try{
         const{}=req.params;
-        const{}=res.locals;
+        // const{}=res.locals;
     }catch(error){
      
     }
 })
 
 //상품 검색 목록 
-router.get('/',authmiddleware,async(req,res)=>{
+router.get('/',async(req,res)=>{
     try{
         const{}=req.params;
-        const{}=res.locals;
+        // const{}=res.locals;
 
     }catch(error){
         
@@ -31,7 +31,7 @@ router.get('/',authmiddleware,async(req,res)=>{
 router.get('/',authmiddleware,async(req,res)=>{
     try{
         const{}=req.params;
-        const{}=res.locals;
+        // const{}=res.locals;
     }catch(error){
         
     }
@@ -41,7 +41,7 @@ router.get('/',authmiddleware,async(req,res)=>{
 router.post('/',authmiddleware,async(req,res)=>{
     try{
         const{}=req.params;
-        const{}=res.locals;
+        // const{}=res.locals;
     }catch(error){
         
     }
@@ -52,7 +52,7 @@ router.post('/',authmiddleware,async(req,res)=>{
 router.delete('/',authmiddleware,async(req,res)=>{
     try{
         const{}=req.params;
-        const{}=res.locals;
+        // const{}=res.locals;
     }catch(error){
         
     }
