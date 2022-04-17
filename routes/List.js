@@ -115,14 +115,17 @@ router.get('/list',authmiddleware,async(req,res)=>{
 })
 
 //article 상세페이지
-router.get('/list/:articleNumber',async(req,res)=>{
+router.get('/detail/:articleNumber',authmiddleware,async(req,res)=>{
     try{
         const{articleNumber}=req.params;
-        if(articleNumber){
+        const {user} = res.locals;
+        //유저 정보확인
+      if(user.length > 0){
+            if(articleNumber){
             //articleNumber가일치 동작
             const List = await Articles.find({articleNumber});
             //List.userId가 같은 것만 가져옴
-            const userImage = await Users.findOne({userId:List.userId});
+            const userImage = await Users.findOne({userId:List.userId}).userImage;
             const totalLike = (await Likes.find({articleNumber})).length;
            return res.status(200).json({
                 List,userImage,totalLike,
@@ -130,11 +133,15 @@ router.get('/list/:articleNumber',async(req,res)=>{
                 msg:'상세조회 페이지입니다'
             });
         }
-        // const{}=res.locals;
-    }catch(error){
         res.status(400).send({
             response:"fail",
             msg: "해당 페이지가 존재하지 않습니다"
+        });
+    }
+    }catch(error){
+        res.status(401).send({
+            response:"fail",
+            msg: "토큰이 유효하지 않습니다."
         });
     };
 });
