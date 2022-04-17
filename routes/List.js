@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/list',authmiddleware,async(req,res)=>{
     try{ 
         //유저위치기반  조회
-         const{ user }= res.locals;
+        const{ user }= res.locals;
         if(user){
             // 사용자 위치 정보
             const userGu = user.userGu;
@@ -146,7 +146,9 @@ router.post('/like',authmiddleware,async(req,res)=>{
         const{user}=res.locals;
         //articleNumber받는다
         const{articleNumber}=req.body;
-        //사용유자가 같은 상품에 좋아요를 했는지 확인
+        //유저 정보가 있는 지 확인
+      if (user.length > 0){
+            //사용유자가 같은 상품에 좋아요를 했는지 확인
         const like = await Likes.find({articleNumber,userId:user.userId});
         if(like){
             //일치하는 갚은 있으면 삭제
@@ -160,11 +162,16 @@ router.post('/like',authmiddleware,async(req,res)=>{
         // 총갯수
         const totalLike = (await Likes.find({articleNumber})).length;
         return  res.status(200).json({ result: "Succeal",  totalLike});
+    };
+    return res.status(401).send({
+        response:'fail',
+        msg:'유효하지 않은 토큰입니다'
+    });
        
     }catch(error){
         res.status(400).send({
             response:"fail",
-            msg: "기능을 사용할 수없습니다"
+            msg: "알수 없는 오류가 발생했습니다."
         });
     };
 });
