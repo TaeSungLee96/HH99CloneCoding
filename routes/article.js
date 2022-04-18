@@ -35,7 +35,7 @@ router.post("/add", authMiddleware, imgMiddleware, async ( req, res) => {
   const { path } = req.files.articleImageUrl;
   console.log("이게 이미지 경로다!!!!!",path)
   const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
-  const createArticles = await Articles.create({articleTitle, articleContent ,articleImageUrl, articlePrice, userId, userNickname, userGu, userDong, articleNumber, articleCreatedAt, userImage});
+  const createArticles = await Articles.create({articleTitle, articleContent ,articleImageUrl, articlePrice, userId, userNickname, userGu, userDong, articleNumber, articleCreatedAt });
   res.status(200).json({createArticles})
   console.log(createArticles)
 }
