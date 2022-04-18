@@ -63,7 +63,7 @@ router.post(
     }
 
     // DB에 저장
-    Users.create({
+    await Users.create({
       userId,
       userPassword,
       userNickname,
