@@ -29,10 +29,8 @@ router.post("/add", authMiddleware, imgMiddleware, async ( req, res) => {
   const { userId, userNickname, userGu, userDong } = res.locals.userDB;
   console.log("res.locals.userDB:",res.locals.userDB)
   console.log("이게 토큰에서 가져온 값이다!!!!!",userId, userNickname, userGu, userDong)
-  const article =  Articles.find()
-  const articleNumber = await article.countDocuments() + 1
+  const articleNumber = await Articles.countDocuments() + 1
   const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss")
-  const existsUsers = await Users.findOne({userId})
   // 게시글 이미지 받기
   const { path } = req.files.articleImageUrl;
   console.log("이게 이미지 경로다!!!!!",path)
