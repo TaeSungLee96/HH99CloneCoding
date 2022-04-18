@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const articlesSchema = mongoose.Schema({
+const ArticlesSchema = mongoose.Schema({
   // Article
 
   articleNumber: {
@@ -45,4 +45,4 @@ const articlesSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("articles", articlesSchema);
+module.exports = mongoose.model("Articles", ArticlesSchema);

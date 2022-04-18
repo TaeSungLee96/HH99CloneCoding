@@ -3,13 +3,13 @@ const Likes = require('../schemas/articleLikes');
 const Articles = require('../schemas/articles');
 const Users = require("../schemas/Users.js");
 const router = express.Router();
-//const authmiddleware = require("../middle/auth-middlewares");
+const authmiddleware = require("../middle/auth-middlewares");
 
 //사용자위치 기반  article
 router.get('/list',authmiddleware,async(req,res)=>{
     try{ 
         //유저위치기반  조회
-        const{ user }= res.locals;
+        const{ user }= res.locals.userDB;
         if(user){
             // 사용자 위치 정보
             const userGu = user.userGu;
@@ -118,7 +118,7 @@ router.get('/list',authmiddleware,async(req,res)=>{
 router.get('/detail/:articleNumber',authmiddleware,async(req,res)=>{
     try{
         const{articleNumber}=req.params;
-        const {user} = res.locals;
+        const {user} = res.locals.userDB;
         //유저 정보확인
       if(user.length > 0){
             if(articleNumber){
@@ -150,7 +150,7 @@ router.get('/detail/:articleNumber',authmiddleware,async(req,res)=>{
 router.post('/like',authmiddleware,async(req,res)=>{
     try{
         //유저 정보 받기
-        const{user}=res.locals;
+        const{user}=res.locals.userDB;
         //articleNumber받는다
         const{articleNumber}=req.body;
         //유저 정보가 있는 지 확인

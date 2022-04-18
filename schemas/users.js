@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 
-const usersSchema = mongoose.Schema({
+const UsersSchema = mongoose.Schema({
 
   // Users
 
   userId: {
     type: String,
     required: true,
+    unique: true,
   },
   userPassword: {
     type: String,
@@ -20,7 +21,7 @@ const usersSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-   userDong: {
+  userDong: {
     type: String,
     required: true,
   },
@@ -28,7 +29,7 @@ const usersSchema = mongoose.Schema({
   userImage: {
     type: String,
     required: true,
-  }
+  },
 });
 
-module.exports = mongoose.model("users", usersSchema);
+module.exports = mongoose.model("Users", UsersSchema);
