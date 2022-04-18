@@ -29,7 +29,8 @@ router.post("/add", authMiddleware, async ( req, res) => {
   const userImage = existsUsers.userImage
   const createArticles = await Articles.create({articleTitle, articleContent ,articleImageUrl, articlePrice, userId, userNickname, userGu, userDong, articleNumber, articleCreatedAt, userImage});
   res.status(200).json({createArticles})
-  }
+  console.log(createArticles)
+}
   catch(err){
     
       res.status(400).json({response: "fail",
@@ -50,6 +51,7 @@ router.delete("/delete/:articleNumber", authMiddleware, async (req, res) => {
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
     await Articles.deleteOne({ articleNumber });
+    console.log("정상적으로 삭제됨")
     res.json({ response : "success" });
     return;
   }
@@ -66,6 +68,7 @@ router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
     await Articles.updateOne({ articleNumber },{ $set: req.body})
+    console.log({ articleTitle, articleContent, articleImageUrl, articlePrice  })
     res.json({ response: "success", msg: "게시글 수정이 완료되었습니다" });
     return;
   }
@@ -79,6 +82,7 @@ router.get("/edit/:articleNumber", authMiddleware, async  (req, res) => {
     const existsArticles = await Articles.findOne({ articleNumber });
     const existsUsers = await Users.findOne({userId})
     const userImage = existsUsers.userImage
+    console.log({ existsArticles, existsUsers, userImage  })
     res.json({ existsArticles, userImage});
   });
 
