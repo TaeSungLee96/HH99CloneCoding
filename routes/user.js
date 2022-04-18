@@ -19,7 +19,7 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     const { userNickname, userGu, userDong } = req.body;
 
     // 수정 할 프로필 이미지 받기
-    const { path } = req.files.userProfile;
+    const { path } = req.files.userImage;
     const userImage = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
 
     // 기존 토큰에서 userId 추출
