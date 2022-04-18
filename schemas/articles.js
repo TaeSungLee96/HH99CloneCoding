@@ -39,7 +39,7 @@ const ArticlesSchema = mongoose.Schema({
     required: true,
   },
   articlePrice: {
-    type: String,
+    type: Number,
     required: true,
   },
 });
