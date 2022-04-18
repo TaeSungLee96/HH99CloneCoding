@@ -117,8 +117,11 @@ router.get('/list',authmiddleware,async(req,res)=>{
 //article 상세페이지
 router.get('/list/:articleNumber',async(req,res)=>{
     try{
+        //파라미터 값
         const{articleNumber}=req.params;
+        // 값이 존재하는 지 검사
         if(articleNumber){
+            //
             const List = await Articles.find({articleNumber})
             const userImage = await Users.find({userId:List.userId})
             const totalLike = (await Likes.find({articleNumber})).length
