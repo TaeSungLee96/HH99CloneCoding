@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const { response } = require("express");
 const moment = require("moment");
 const authMiddleware = require("../middleware/authMiddleware");
-const Users = require("../schemas/Users");
+
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
