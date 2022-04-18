@@ -7,6 +7,10 @@ const jwt = require("jsonwebtoken");
 const { response } = require("express");
 const moment = require("moment");
 const authMiddleware = require("../middleware/authMiddleware");
+const multipart = require("connect-multiparty"); // 사진data 핸들링 라이브러리
+const imgMiddleware = multipart({
+  uploadDir: "uploads",
+});
 
 
 router.use(express.json());
@@ -18,15 +22,17 @@ router.get("/", (req, res) => {
 });
 
 //게시글 저장
-router.post("/add", authMiddleware, async ( req, res) => {
+router.post("/add", authMiddleware, imgMiddleware, async ( req, res) => {
   try{
-  const { articleTitle, articleContent, articleImageUrl, articlePrice } = req.body;
+  const { articleTitle, articleContent, articlePrice } = req.body;
   const { userId, userNickname, userGu, userDong } = res.locals.userDB; 
   const article =  Articles.find()
   const articleNumber = await article.countDocuments() + 1
   const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss")
   const existsUsers = await Users.findOne({userId})
-  const userImage = existsUsers.userImage
+  // 게시글 이미지 받기
+  const { path } = req.files.articleImageUrl;
+  const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
   const createArticles = await Articles.create({articleTitle, articleContent ,articleImageUrl, articlePrice, userId, userNickname, userGu, userDong, articleNumber, articleCreatedAt, userImage});
   res.status(200).json({createArticles})
   console.log(createArticles)
@@ -63,7 +69,10 @@ router.delete("/delete/:articleNumber", authMiddleware, async (req, res) => {
 router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {  
   const { userId } = res.locals.userDB; 
   const articleNumber = req.params.articleNumber;
-  const { articleTitle, articleContent, articleImageUrl, articlePrice  } = req.body;
+  const { articleTitle, articleContent, articlePrice  } = req.body;
+// 게시글 수정 이미지 받기
+  const { path } = req.files.articleImageUrl;
+  const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
   const existsArticles = await Articles.findOne({ articleNumber });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
