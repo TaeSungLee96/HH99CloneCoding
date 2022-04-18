@@ -4,8 +4,9 @@ const router = express.Router();
 const Articles = require("../schemas/Articles")
 const moment = require("moment");
 const authMiddleware = require("../middleware/authMiddleware");
-// const jwt = require("jsonwebtoken");
-// const { response } = require("express");
+const Users = require("../schemas/Users");
+const jwt = require("jsonwebtoken");
+const { response } = require("express");
 
 router.use(express.json()); 
 router.use(express.urlencoded( {extended : false } ));
@@ -16,9 +17,9 @@ router.get("/", (req, res) =>{
 })
 
 //게시글 저장
-router.post("/add", async ( req, res) => {
-  const { articleTitle, articleContent, articleImageUrl, articlePrice, userId, userNickname, userGu, userDong  } = req.body;
-  //const { userId, userNickname, userGu, userDong } = res.locals.userDB; //전역변수로 받을 예정
+router.post("/add", authMiddleware, async ( req, res) => {
+  const { articleTitle, articleContent, articleImageUrl, articlePrice } = req.body;
+  const { userId, userNickname, userGu, userDong } = res.locals.userDB; //전역변수로 받을 예정
   const article =  Articles.find()
   const articleNumber = await article.countDocuments() + 1
   const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss")
@@ -52,15 +53,15 @@ router.post("/add", async ( req, res) => {
 
 
 //포스팅 삭제
-router.delete("delete/:articleNumber", async (req, res) => {  
-  const articleNumber = 3 //req.params;
+router.delete("/delete/:articleNumber", authMiddleware, async (req, res) => {  
+  const articleNumber = req.params.articleNumber;
   const { userId } = req.body;
   //const { userId } = res.locals.userDB; //전역변수로 받을 예정
-  //const article =  Articles.find();
-  //const existsArticles = await Articles.findOne({ articleNumber });
-  const DBuserId = "mandulover"//existsArticles.userId;
+  //const article =  await Articles.find();
+  const existsArticles = await Articles.findOne({ articleNumber });
+  const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
-    await Articles.deleteOne({ articleNumber:3 });
+    await Articles.deleteOne({ articleNumber });
     res.json({ response : "success" });
     return;
   }
@@ -69,16 +70,15 @@ router.delete("delete/:articleNumber", async (req, res) => {
 });
 
 //포스팅 수정
-router.post("/edit/:articleNumber", async (req, res) => {  
+router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {  
+  //const articleNumber = 3
   //const { userId } = res.locals.userDB; //전역변수로 받을 예정
-  const articleNumber = 3 //req.params;
-  // console.log("여기야!!!!!!",articleNumberString)
-  // const articleNumber = Number(articleNumberString);
+  const articleNumber = req.params.articleNumber;
   const { userId, articleTitle, articleContent, articleImageUrl, articlePrice  } = req.body;
   const existsArticles = await Articles.findOne({ articleNumber });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
-    await Articles.updateOne({ "articleNumber" : articleNumber },{ $set: req.body})
+    await Articles.updateOne({ articleNumber },{ $set: req.body})
     res.json({ response: "success", msg: "게시글 수정이 완료되었습니다" });
     return;
   }
@@ -86,8 +86,9 @@ router.post("/edit/:articleNumber", async (req, res) => {
   }
 });
 
-router.get("/edit/:articleNumber", authMiddleware, async (req, res) => { 
-    const { userId } = res.locals.userDB; //전역변수로 받을 예정
+router.get("/edit/:articleNumber", authMiddleware, async  (req, res) => { 
+  const { userId } = req.body;  
+  //const { userId } = res.locals.userDB; //전역변수로 받을 예정
     const articleNumber = req.params;
     const existsArticles = await Articles.findOne({ articleNumber });
     const existsUsers = await Users.findOne({userId})
