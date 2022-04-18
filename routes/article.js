@@ -1,19 +1,21 @@
 const express = require("express");
 const Http = require("http");
 const router = express.Router();
-const Articles = require("../schemas/Articles")
+const Articles = require("../schemas/Articles");
+const Users = require("../schemas/Users");
+const jwt = require("jsonwebtoken");
+const { response } = require("express");
 const moment = require("moment");
 const authMiddleware = require("../middleware/authMiddleware");
 const Users = require("../schemas/Users");
 
+router.use(express.json());
+router.use(express.urlencoded({ extended: false }));
 
-router.use(express.json()); 
-router.use(express.urlencoded( {extended : false } ));
 
-
-router.get("/", (req, res) =>{
-  res.send("/article 경로에 해당합니다")
-})
+router.get("/", (req, res) => {
+  res.send("/article 경로에 해당합니다");
+});
 
 //게시글 저장
 router.post("/add", authMiddleware, async ( req, res) => {

@@ -1,18 +1,15 @@
 const mongoose = require("mongoose");
 
 const ArticlelikesSchema = mongoose.Schema({
-
-    // ArticleLikes
- 
-articleNumber: {
+  // ArticleLikes
+  articleNumber: {
     type: Number,
     required: true,
   },
   userId: {
     type: String,
-    required: true
-      }
-
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Articlelikes", ArticlelikesSchema);

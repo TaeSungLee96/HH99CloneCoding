@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 
-const UsersSchema = new mongoose.Schema({
-
+const UsersSchema = mongoose.Schema({
   // Users
-
   userId: {
     type: String,
     required: true,

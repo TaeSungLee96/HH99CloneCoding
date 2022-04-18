@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("../schemas/Users"); //Users DB 연결하기
+const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
 const myKey = fs.readFileSync(__dirname + "/key.txt").toString(); // 토큰 시크릿 키값 불러오기
 const multipart = require("connect-multiparty"); // 사진data 핸들링 라이브러리
-const imgMiddleware = multipart();
+const imgMiddleware = multipart({
+  uploadDir: "uploads",
+});
 const authMiddleware = require("../middleware/authMiddleware"); // 인증미들웨어
 
 // 사용자 정보수정
@@ -55,3 +58,5 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     res.status(400).json({ result: false });
   }
 });
+
+module.exports = router;

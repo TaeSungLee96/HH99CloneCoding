@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator"); // 회원가입 정보 필터링 라이브러리
 const Users = require("../schemas/Users"); //Users DB 연결하기
+const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
 const initProfile = fs.readFileSync(__dirname + "/initProfile.txt").toString(); // 프로필 사진 초기값 불러오기
@@ -48,7 +49,12 @@ router.post(
     // 에러 핸들링 함수 (양식에 안맞으면 400상태와 errors메세지 반환)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res
+        .status(400)
+        .json({
+          errors: errors.array(),
+          msg: "양식을 지켜서 다시 작성해주세요",
+        });
     }
 
     // 프론트 --> 서버로 전달받은 데이터
@@ -58,12 +64,12 @@ router.post(
 
     // 이미 가입된 userId인지 확인
     const existUserId = await Users.findOne({ userId });
-    if (existUserId.length) {
+    if (existUserId) {
       return res.status(400).send({ msg: "이미 가입되어있는 아이디입니다." });
     }
 
     // DB에 저장
-    Users.create({
+    await Users.create({
       userId,
       userPassword,
       userNickname,
@@ -123,6 +129,8 @@ router.post(
 
     // 토큰 생성 및 발급
     const token = jwt.sign(payload, secret, options);
-    res.json({ token: token }).send({ msg: "로그인이 완료 되었습니다." });
+    res.status(200).json({ token: token, msg: "로그인이 완료 되었습니다." });
   }
 );
+
+module.exports = router;
