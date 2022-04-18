@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator"); // 회원가입 정보 필터링 라이브러리
 const Users = require("../schemas/Users"); //Users DB 연결하기
+const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
 const initProfile = fs.readFileSync(__dirname + "/initProfile.txt").toString(); // 프로필 사진 초기값 불러오기
@@ -126,3 +127,5 @@ router.post(
     res.json({ token: token }).send({ msg: "로그인이 완료 되었습니다." });
   }
 );
+
+module.exports = router;

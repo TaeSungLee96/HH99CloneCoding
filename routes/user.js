@@ -55,3 +55,5 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     res.status(400).json({ result: false });
   }
 });
+
+module.exports = router;
