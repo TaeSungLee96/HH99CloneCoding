@@ -5,8 +5,7 @@ const Articles = require("../schemas/Articles")
 const moment = require("moment");
 const authMiddleware = require("../middleware/authMiddleware");
 const Users = require("../schemas/Users");
-const jwt = require("jsonwebtoken");
-const { response } = require("express");
+
 
 router.use(express.json()); 
 router.use(express.urlencoded( {extended : false } ));
@@ -18,46 +17,33 @@ router.get("/", (req, res) =>{
 
 //게시글 저장
 router.post("/add", authMiddleware, async ( req, res) => {
+  try{
   const { articleTitle, articleContent, articleImageUrl, articlePrice } = req.body;
-  const { userId, userNickname, userGu, userDong } = res.locals.userDB; //전역변수로 받을 예정
+  const { userId, userNickname, userGu, userDong } = res.locals.userDB; 
   const article =  Articles.find()
   const articleNumber = await article.countDocuments() + 1
   const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss")
-  const userImage = "(임시data)userImage"
+  const existsUsers = await Users.findOne({userId})
+  const userImage = existsUsers.userImage
   const createArticles = await Articles.create({articleTitle, articleContent ,articleImageUrl, articlePrice, userId, userNickname, userGu, userDong, articleNumber, articleCreatedAt, userImage});
   res.status(200).json({createArticles})
-  });
-
-  try{ 
-    if(!articleTitle||articleContent||articleImageUrl||articlePrice){
-      throw "400Error";
-      }else if(!userId||userNickname||userGu||userDong){
-      throw "401Error";
-      }
-    }
-    
+  }
   catch(err){
-    if(err == "400Error"){
+    
       res.status(400).json({response: "fail",
       msg: "양식에 맞추어 모든 내용을 작성해주세요"  })
       }
-    if(err == "401Error"){
-      res.status(401).json({Response: "유효하지 않은 토큰정보 입니다"})
-      }
-    }
-
+  });
+  
   // (입력 값) articleTitle  articleContent  articleImageUrl articlePrice
-  //(헤더 토큰 값) userId   userNickname  userGu  userDong
-  //(DB 빼올 값) 
+  //(헤더 토큰 값) userId  userNickname  userGu  userDong
   //(server 지정 값) articleNumber  articleCreatedAt 
+  //(DB 빼올 값) userImage
 
-
-//포스팅 삭제
+//게시글 삭제
 router.delete("/delete/:articleNumber", authMiddleware, async (req, res) => {  
   const articleNumber = req.params.articleNumber;
-  const { userId } = req.body;
-  //const { userId } = res.locals.userDB; //전역변수로 받을 예정
-  //const article =  await Articles.find();
+  const { userId } = res.locals.userDB;
   const existsArticles = await Articles.findOne({ articleNumber });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
@@ -69,12 +55,11 @@ router.delete("/delete/:articleNumber", authMiddleware, async (req, res) => {
   }
 });
 
-//포스팅 수정
+//게시글 수정
 router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {  
-  //const articleNumber = 3
-  //const { userId } = res.locals.userDB; //전역변수로 받을 예정
+  const { userId } = res.locals.userDB; 
   const articleNumber = req.params.articleNumber;
-  const { userId, articleTitle, articleContent, articleImageUrl, articlePrice  } = req.body;
+  const { articleTitle, articleContent, articleImageUrl, articlePrice  } = req.body;
   const existsArticles = await Articles.findOne({ articleNumber });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
@@ -82,20 +67,18 @@ router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {
     res.json({ response: "success", msg: "게시글 수정이 완료되었습니다" });
     return;
   }
-  else{ res.json({ response: "fail", msg: "양식에 맞추어 모든 내용을 작성해주세요" });
-  }
+  // else{ res.json({ response: "fail", msg: "양식에 맞추어 모든 내용을 작성해주세요" });
+  // } // 한 부분 빠지더라도 바디에서 받아온 내역만 수정하여 오류 나지 않음
 });
 
-router.get("/edit/:articleNumber", authMiddleware, async  (req, res) => { 
-  const { userId } = req.body;  
-  //const { userId } = res.locals.userDB; //전역변수로 받을 예정
-    const articleNumber = req.params;
+router.get("/edit/:articleNumber", authMiddleware, async  (req, res) => {  
+    const { userId } = res.locals.userDB; 
+    const articleNumber = req.params.articleNumber;
     const existsArticles = await Articles.findOne({ articleNumber });
     const existsUsers = await Users.findOne({userId})
     const userImage = existsUsers.userImage
     res.json({ existsArticles, userImage});
   });
-
 
 
 module.exports = router;
