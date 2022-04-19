@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const Users = require("../schemas/Users");
+const Users = require("../schemas/users");
 const fs = require("fs");
 const myKey = fs.readFileSync(__dirname + "/../routes/key.txt").toString();
 
@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   const Token = req.headers.authorization; // authorization은 FE가 헤더에 실은 key이름에 따라 변동 되어야함.
   // const logInToken = Token.replace("Bearer", ""); // replace()는 헤더에 실은 value에 따라 필요없을 수 있음.
   const logInToken = Token;
-  console.log("내가 토큰이다!!!!!",Token)
+  console.log("내가 토큰이다!!!!!", Token);
 
   try {
     const token = jwt.verify(logInToken, myKey);
