@@ -97,7 +97,7 @@ router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {
   });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
-    await Articles.updateOne({ articleNumber }, { $set: req.body });
+    await Articles.updateOne({ articleNumber }, { $set: {articleTitle, articleContent, articlePrice, articleImageUrl} });
     console.log({
       articleTitle,
       articleContent,
