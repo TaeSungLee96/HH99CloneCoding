@@ -97,9 +97,9 @@ router.post(
     // 게시글 수정 이미지 받기
     console.log("사진 파일입니당 : ", req.files);
 
-    const path = req.files.articleImageUrl;
+    const imageInfo = req.files.articleImageUrl;
 
-    const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+    const articleImageUrl = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
     const existsArticles = await Articles.findOne({
       articleNumber: Number(articleNumber),
     });
