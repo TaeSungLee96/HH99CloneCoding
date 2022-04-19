@@ -247,25 +247,25 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
     if (user) {
       if (articleNumber) {
         //articleNumber가 일치하는 것
-        const List = await Articles.find({ articleNumber });
+        const list = await Articles.find({ articleNumber });
         //List.userId가 같은 것만 가져옴
         const userImage = await Users.findOne({ userId: List.userId })
           .userImage;
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
+        //상세페이지 총반화
+        const List = [list,userImage,totalLike];
+        //성공시 반화 값
         return res.status(200).json({
-          List,
-          userImage,
-          totalLike,
-          response: "success",
-          msg: "상세조회 페이지입니다",
+          List
         });
-      }
+      };
       res.status(401).json({
         response: "fail",
         msg: "해당 페이지가 존재하지 않습니다",
       });
-    }
+    };
+    throw error;
   } catch (error) {
     res.status(401).json({
       response: "fail",
