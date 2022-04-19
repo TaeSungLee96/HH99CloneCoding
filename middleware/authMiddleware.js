@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const Users = require("../schemas/Users");
+const Users = require("../schemas/users");
 const fs = require("fs");
 const myKey = fs.readFileSync(__dirname + "/../routes/key.txt").toString();
 
