@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator"); // 회원가입 정보 필터링 라이브러리
-const Users = require("../schemas/Users"); //Users DB 연결하기
+const Users = require("../schemas/users"); //Users DB 연결하기
 const jwt = require("jsonwebtoken");
 
 const fs = require("fs");

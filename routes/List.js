@@ -1,7 +1,7 @@
 const express = require('express');
 
 const Articles = require('../schemas/articles');
-const Users = require("../schemas/Users.js");
+const Users = require("../schemas/users.js");
 const router = express.Router();
 const authmiddleware = require("../middle/auth-middlewares");
 

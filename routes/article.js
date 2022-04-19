@@ -1,8 +1,8 @@
 const express = require("express");
 const Http = require("http");
 const router = express.Router();
-const Articles = require("../schemas/Articles");
-const Users = require("../schemas/Users");
+const Articles = require("../schemas/articles");
+const Users = require("../schemas/users");
 const Likes = require('../schemas/articleLikes');
 const jwt = require("jsonwebtoken");
 const { response } = require("express");

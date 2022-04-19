@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Users = require("../schemas/Users"); //Users DB 연결하기
+const Users = require("../schemas/users"); //Users DB 연결하기
 const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
