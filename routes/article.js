@@ -262,7 +262,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
           msg: "상세조회 페이지입니다",
         });
       }
-      res.status(400).json({
+      res.status(401).json({
         response: "fail",
         msg: "해당 페이지가 존재하지 않습니다",
       });
