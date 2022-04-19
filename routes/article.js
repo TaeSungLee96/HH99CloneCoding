@@ -247,8 +247,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         //articleNumber가 일치하는 것
         const list = await Articles.find({ articleNumber });
         //List.userId가 같은 것만 가져옴
-        const userImage = await Users.findOne({ userId: list.userId })
-          .userImage;
+        const userImage = (await Users.findOne({ userId: list.userId })).userImage;
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
         const List = {list,userImage,totalLike}
