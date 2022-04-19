@@ -170,8 +170,8 @@ router.get("/list", authMiddleware, async (req, res) => {
       }
       return res.status(200).json({
         List,
-        response:"success",
-        msg:"조회 성공하셨습니다"
+       /*  response:"success",
+        msg:"조회 성공하셨습니다" */
     });
     }
       //검색기능
