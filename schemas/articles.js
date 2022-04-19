@@ -39,9 +39,9 @@ const ArticlesSchema = mongoose.Schema({
     required: true,
   },
   articlePrice: {
-    type: String,
+    type: Number,
     required: true,
   },
 });
 
-module.exports = mongoose.model("Articles", ArticlesSchema);
+module.exports = mongoose.model("articles", ArticlesSchema);

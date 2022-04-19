@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator"); // 회원가입 정보 필터링 라이브러리
-const Users = require("../schemas/Users"); //Users DB 연결하기
+const Users = require("../schemas/users"); //Users DB 연결하기
 const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
@@ -49,12 +49,10 @@ router.post(
     // 에러 핸들링 함수 (양식에 안맞으면 400상태와 errors메세지 반환)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res
-        .status(400)
-        .json({
-          errors: errors.array(),
-          msg: "양식을 지켜서 다시 작성해주세요",
-        });
+      return res.status(400).json({
+        errors: errors.array(),
+        msg: "양식을 지켜서 다시 작성해주세요",
+      });
     }
 
     // 프론트 --> 서버로 전달받은 데이터
