@@ -19,9 +19,10 @@ router.get("/mypage", authMiddleware, async (req, res) => {
     const userId = user.userId; // 유저Id
 
     const userInfo = await Users.findOne({ userId });
-    const { userImage } = userInfo;
+    userInfo["userPassword"] = "";
+    console.log(userInfo);
+
     res.json({ userInfo });
-    res.sendFile(__dirname + "/../uploads" + userImage);
   } catch (err) {
     console.log(err);
     console.log("user.js -> 사용자 정보수정 - 원본데이터 내려주기에서 에러남");
@@ -49,7 +50,7 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     );
 
     // 쿠키비우기
-    res.clearCookie("isLogin"); // 프론트분들이 브라우저에 저장한 쿠키명울 매개변수로 넣으면됨
+    // res.clearCookie("isLogin"); // 프론트분들이 브라우저에 저장한 쿠키명울 매개변수로 넣으면됨
 
     /// payload에 userId, userGu, userDong 담기
     const payload = { userId, userGu, userDong, userNickname };
@@ -64,10 +65,10 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     console.log("내가 토큰이다[2]", token);
 
     // 쿠키에 바로 저장시키기
-    res.cookie("isLogin", token);
+    res.status(200).cookie("isLogin", token);
 
     // 정상응답하기
-    res.status(200).json({ msg: "사용자 정보 수정이 완료되었습니다." });
+    // res.status(200).json({ msg: "사용자 정보 수정이 완료되었습니다." });
   } catch (error) {
     console.log(error);
     console.log("user.js -> 사용자 정보수정에서 에러남");
