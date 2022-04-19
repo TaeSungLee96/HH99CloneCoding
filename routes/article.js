@@ -55,12 +55,10 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     res.status(200).json({ createArticles });
     console.log(createArticles);
   } catch (err) {
-    res
-      .status(400)
-      .json({
-        response: "fail",
-        msg: "양식에 맞추어 모든 내용을 작성해주세요",
-      });
+    res.status(400).json({
+      response: "fail",
+      msg: "양식에 맞추어 모든 내용을 작성해주세요",
+    });
   }
 });
 
@@ -92,9 +90,11 @@ router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {
   const { articleTitle, articleContent, articlePrice } = req.body;
   console.log(req.body);
   // 게시글 수정 이미지 받기
-  const { path } = req.files.articleImageUrl;
+  const path = req.files.articleImageUrl;
   const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
-  const existsArticles = await Articles.findOne({ articleNumber:Number(articleNumber) });
+  const existsArticles = await Articles.findOne({
+    articleNumber: Number(articleNumber),
+  });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
     await Articles.updateOne({ articleNumber }, { $set: req.body });
@@ -127,7 +127,7 @@ router.get("/edit/:articleNumber", authMiddleware, async (req, res) => {
 router.get("/list", authMiddleware, async (req, res) => {
   try {
     //유저위치기반  조회
-    const  user = res.locals.userDB;
+    const user = res.locals.userDB;
     if (user) {
       // 사용자 위치 정보
       const userGu = user.userGu;
@@ -168,71 +168,75 @@ router.get("/list", authMiddleware, async (req, res) => {
         });
       }
       return res.status(200).json({
-        List
-       /*  response:"success",
+        List,
+        /*  response:"success",
         msg:"조회 성공하셨습니다" */
-    });
+      });
     }
-      //검색기능
-      const keyword = req.query.keyword;
-      //검색어가 있는 지 확인
-       if(keyword){
-           //array생성
-           let option = [];
-           //조건문
-           if (option) {
-            //정규식(articleTitle키값은 밸류 req.qurey.item설정)
-            option = [ { articleTitle: new RegExp(keyword) } ];
-           } 
-           //db에서 검색
-           const Srech = await Articles.aggregate([
-             //조건에 맞게 검색
-               {$match: {$or:option,userGu:user.userGu,userDong:user.userDong}  
-               },
-               //db에 다른 컬렉션 연결
-               { $lookup: {
-                   from: 'articlelike',
-                   localField:'articleNumber' ,
-                   foreignField:'articleNumber',
-                   as: 'Like'
-               }}
-               // 객체를 가공하여 보여 주고 싶은 것들만 보여줌
-               ,{
-               $project:{
-               _id: 1,
-               articleNumber: 1,
-               userId: 1,
-               userNickname: 1,
-               userGu: 1,
-               userDong: 1,
-               articleCreatedAt: 1,
-               articleImageUrl: 1,
-               articlePrice: 1,
-               likeCount: { $size: '$Like'}
-              }}
-           ]).
-               sort("-articleCreatedAt")
-               .exec();
-              //검색 조건에 일치 하는 게 없을 때
-               if(Array.isArray(Srech) && Srech.length === 0)  {
-                   return res.status(401).json({
-                       response:"fail",
-                       msg: "조건에 일치하는 게 없습니다"
-                   })
-               }
-               // 조건에 일치 시
-               return res.status(200).json({
-                   Srech,
-                   response:"success",
-                   msg:"조회 성공하셨습니다"
-               });
+    //검색기능
+    const keyword = req.query.keyword;
+    //검색어가 있는 지 확인
+    if (keyword) {
+      //array생성
+      let option = [];
+      //조건문
+      if (option) {
+        //정규식(articleTitle키값은 밸류 req.qurey.item설정)
+        option = [{ articleTitle: new RegExp(keyword) }];
       }
-       throw error;
-  }catch(error){
-      res.status(400).json({
-          response:"fail",
-          msg: "로그인을 해주십시오"
-      })
+      //db에서 검색
+      const Srech = await Articles.aggregate([
+        //조건에 맞게 검색
+        {
+          $match: { $or: option, userGu: user.userGu, userDong: user.userDong },
+        },
+        //db에 다른 컬렉션 연결
+        {
+          $lookup: {
+            from: "articlelike",
+            localField: "articleNumber",
+            foreignField: "articleNumber",
+            as: "Like",
+          },
+        },
+        // 객체를 가공하여 보여 주고 싶은 것들만 보여줌
+        {
+          $project: {
+            _id: 1,
+            articleNumber: 1,
+            userId: 1,
+            userNickname: 1,
+            userGu: 1,
+            userDong: 1,
+            articleCreatedAt: 1,
+            articleImageUrl: 1,
+            articlePrice: 1,
+            likeCount: { $size: "$Like" },
+          },
+        },
+      ])
+        .sort("-articleCreatedAt")
+        .exec();
+      //검색 조건에 일치 하는 게 없을 때
+      if (Array.isArray(Srech) && Srech.length === 0) {
+        return res.status(401).json({
+          response: "fail",
+          msg: "조건에 일치하는 게 없습니다",
+        });
+      }
+      // 조건에 일치 시
+      return res.status(200).json({
+        Srech,
+        response: "success",
+        msg: "조회 성공하셨습니다",
+      });
+    }
+    throw error;
+  } catch (error) {
+    res.status(400).json({
+      response: "fail",
+      msg: "로그인을 해주십시오",
+    });
   }
 });
 
@@ -240,7 +244,7 @@ router.get("/list", authMiddleware, async (req, res) => {
 router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
   try {
     const { articleNumber } = req.params;
-    const  user  = res.locals.userDB;
+    const user = res.locals.userDB;
     //유저 정보확인
     if (user) {
       if (articleNumber) {
@@ -248,11 +252,11 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         const list = await Articles.find({ articleNumber });
         //List.userId가 같은 것만 가져옴
         const users = await Users.findOne({ userId: list.userId });
-        const userImage = users.userImage
+        const userImage = users.userImage;
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
-        const List = {list,userImage,totalLike}
-        console.log("상세페이지",List)
+        const List = { list, userImage, totalLike };
+        console.log("상세페이지", List);
         return res.status(200).json({
           List,
         });
@@ -274,7 +278,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
 router.post("/like", authMiddleware, async (req, res) => {
   try {
     //유저 정보 받기
-    const  user  = res.locals.userDB;
+    const user = res.locals.userDB;
     //articleNumber받는다
     const { articleNumber } = req.body;
     //유저 정보가 있는 지 확인
