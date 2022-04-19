@@ -127,11 +127,13 @@ router.get("/edit/:articleNumber", authMiddleware, async (req, res) => {
 router.get("/list", authMiddleware, async (req, res) => {
   try {
     //유저위치기반  조회
-    const { user } = res.locals.userDB;
+    const  user = res.locals.userDB;
+    console.log(user)
     if (user) {
-      // 사용자 위치 정보
+      // 사용자 위치 정보``
       const userGu = user.userGu;
       const userDong = user.userDong;
+      console.log(userGu,userDong)
       //위치 정보 매칭
       const List = await Articles.aggregate([
         { $match: { userGu: userGu, userDong: userDong } },
@@ -181,14 +183,17 @@ router.get("/list", authMiddleware, async (req, res) => {
            } 
            //db에서 검색
            const Srech = await Articles.aggregate([
+             //조건에 맞게 검색
                {$match: {$or:option,userGu:user.userGu,userDong:user.userDong}  
                },
+               //db에 다른 컬렉션 연결
                { $lookup: {
                    from: 'articlelike',
                    localField:'articleNumber' ,
                    foreignField:'articleNumber',
                    as: 'Like'
                }}
+               // 객체를 가공하여 보여 주고 싶은 것들만 보여줌
                ,{
                $project:{
                _id: 1,
@@ -232,7 +237,7 @@ router.get("/list", authMiddleware, async (req, res) => {
 router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
   try {
     const { articleNumber } = req.params;
-    const { user } = res.locals.userDB;
+    const  user  = res.locals.userDB;
     //유저 정보확인
     if (user.length > 0) {
       if (articleNumber) {
@@ -268,7 +273,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
 router.post("/like", authMiddleware, async (req, res) => {
   try {
     //유저 정보 받기
-    const { user } = res.locals.userDB;
+    const  user  = res.locals.userDB;
     //articleNumber받는다
     const { articleNumber } = req.body;
     //유저 정보가 있는 지 확인
