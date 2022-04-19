@@ -90,14 +90,20 @@ router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {
   const { articleTitle, articleContent, articlePrice } = req.body;
   console.log(req.body);
   // 게시글 수정 이미지 받기
+  console.log("사진 파일입니당 : ", req.files);
+
   const path = req.files.articleImageUrl;
+
   const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
   const existsArticles = await Articles.findOne({
     articleNumber: Number(articleNumber),
   });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
-    await Articles.updateOne({ articleNumber }, { $set: {articleTitle, articleContent, articlePrice, articleImageUrl} });
+    await Articles.updateOne(
+      { articleNumber },
+      { $set: { articleTitle, articleContent, articlePrice, articleImageUrl } }
+    );
     console.log({
       articleTitle,
       articleContent,
