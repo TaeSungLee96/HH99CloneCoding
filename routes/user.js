@@ -12,6 +12,21 @@ const imgMiddleware = multipart({
 const authMiddleware = require("../middleware/authMiddleware"); // 인증미들웨어
 
 // 사용자 정보수정 - 원본데이터 내려주기
+router.get("/mypage", authMiddleware, async (req, res) => {
+  try {
+    // 기존 토큰에서 userId 추출
+    const user = res.locals.userDB; // 인증미들웨어에서 제공하는 전역변수
+    const userId = user.userId; // 유저Id
+
+    const userInfo = await Users.findOne({ userId });
+    const { userImage } = userInfo;
+    res.json({ userInfo });
+    res.sendFile(__dirname + "/../uploads" + userImage);
+  } catch (err) {
+    console.log(err);
+    console.log("user.js -> 사용자 정보수정 - 원본데이터 내려주기에서 에러남");
+  }
+});
 
 // 사용자 정보수정
 router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
