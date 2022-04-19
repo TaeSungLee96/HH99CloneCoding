@@ -162,6 +162,7 @@ router.get("/list", authMiddleware, async (req, res) => {
       ])
         .sort("-articleCreatedAt")
         .exec();
+        console.log(List)
       //위치 정보에일치하는 정보가 없을때
       if (Array.isArray(List) && List.length === 0) {
         return res.status(401).json({
@@ -169,6 +170,11 @@ router.get("/list", authMiddleware, async (req, res) => {
           msg: "조건에 일치하는 게 없습니다",
         });
       }
+      return res.status(200).json({
+        List,
+        response:"Succeal",
+        msg:"조회 성공하셨습니다"
+    });
     }
       //검색기능
       const keyword = req.query.keyword;
