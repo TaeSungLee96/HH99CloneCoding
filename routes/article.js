@@ -161,21 +161,19 @@ router.get('/list',authMiddleware,async(req,res)=>{
            //조건문
            if (option) {
             //정규식(articleTitle키값은 밸류 req.qurey.item설정)
-            option = [ { articleTitle: new RegExp(keyword) },
-                {  userGu:new RegExp(user.userGu) },
-               {  userDong:new RegExp(user.userDong) } ];
+            option = [ { articleTitle: new RegExp(keyword) } ];
            } 
            //db에서 검색
            const Srech = await Articles.aggregate([
-               {$match: {$or:option}  
+               {$match: {$or:option,userGu:user.userGu,userDong:user.userDong}  
                },
                { $lookup: {
                    from: 'articlelike',
                    localField:'articleNumber' ,
                    foreignField:'articleNumber',
                    as: 'Like'
-               }},
-               {
+               }}``
+               ,{
                $project:{
                _id: 1,
                articleNumber: 1,
