@@ -25,7 +25,7 @@ const requestMiddleware = (req, res, next) => {
 };
 
 // 각종 미들웨어
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cookieParser());

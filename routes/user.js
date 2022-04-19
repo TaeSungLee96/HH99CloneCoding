@@ -11,8 +11,9 @@ const imgMiddleware = multipart({
 });
 const authMiddleware = require("../middleware/authMiddleware"); // 인증미들웨어
 
+// 사용자 정보수정 - 원본데이터 내려주기
+
 // 사용자 정보수정
-/// 인증미들웨어 추가예정
 router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
   try {
     // 수정 할 userNickname, userGu, userDong 받기
