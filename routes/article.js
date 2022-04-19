@@ -127,7 +127,7 @@ router.get("/edit/:articleNumber", authMiddleware, async (req, res) => {
 router.get("/list", authMiddleware, async (req, res) => {
   try {
     //유저위치기반  조회
-    const { user } = res.locals.userDB;
+    const  user = res.locals.userDB;
     console.log(user)
     if (user) {
       // 사용자 위치 정보``
@@ -237,7 +237,7 @@ router.get("/list", authMiddleware, async (req, res) => {
 router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
   try {
     const { articleNumber } = req.params;
-    const { user } = res.locals.userDB;
+    const  user  = res.locals.userDB;
     //유저 정보확인
     if (user.length > 0) {
       if (articleNumber) {
@@ -273,7 +273,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
 router.post("/like", authMiddleware, async (req, res) => {
   try {
     //유저 정보 받기
-    const { user } = res.locals.userDB;
+    const  user  = res.locals.userDB;
     //articleNumber받는다
     const { articleNumber } = req.body;
     //유저 정보가 있는 지 확인
