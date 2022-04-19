@@ -84,38 +84,46 @@ router.delete("/delete/:articleNumber", authMiddleware, async (req, res) => {
 });
 
 //게시글 수정
-router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {
-  const { userId } = res.locals.userDB;
-  const articleNumber = req.params.articleNumber;
-  const { articleTitle, articleContent, articlePrice } = req.body;
-  console.log(req.body);
-  // 게시글 수정 이미지 받기
-  console.log("사진 파일입니당 : ", req.files);
+router.post(
+  "/edit/:articleNumber",
+  authMiddleware,
+  imgMiddleware,
+  async (req, res) => {
+    const { userId } = res.locals.userDB;
+    const articleNumber = req.params.articleNumber;
+    const { articleTitle, articleContent, articlePrice } = req.body;
 
-  const path = req.files.articleImageUrl;
+    console.log(req.body);
+    // 게시글 수정 이미지 받기
+    console.log("사진 파일입니당 : ", req.files);
 
-  const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
-  const existsArticles = await Articles.findOne({
-    articleNumber: Number(articleNumber),
-  });
-  const DBuserId = existsArticles.userId;
-  if (userId == DBuserId) {
-    await Articles.updateOne(
-      { articleNumber },
-      { $set: { articleTitle, articleContent, articlePrice, articleImageUrl } }
-    );
-    console.log({
-      articleTitle,
-      articleContent,
-      articleImageUrl,
-      articlePrice,
+    const path = req.files.articleImageUrl;
+
+    const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+    const existsArticles = await Articles.findOne({
+      articleNumber: Number(articleNumber),
     });
-    res.json({ response: "success", msg: "게시글 수정이 완료되었습니다" });
-    return;
+    const DBuserId = existsArticles.userId;
+    if (userId == DBuserId) {
+      await Articles.updateOne(
+        { articleNumber },
+        {
+          $set: { articleTitle, articleContent, articlePrice, articleImageUrl },
+        }
+      );
+      console.log({
+        articleTitle,
+        articleContent,
+        articleImageUrl,
+        articlePrice,
+      });
+      res.json({ response: "success", msg: "게시글 수정이 완료되었습니다" });
+      return;
+    }
+    // else{ res.json({ response: "fail", msg: "양식에 맞추어 모든 내용을 작성해주세요" });
+    // } // 한 부분 빠지더라도 바디에서 받아온 내역만 수정하여 오류 나지 않음
   }
-  // else{ res.json({ response: "fail", msg: "양식에 맞추어 모든 내용을 작성해주세요" });
-  // } // 한 부분 빠지더라도 바디에서 받아온 내역만 수정하여 오류 나지 않음
-});
+);
 
 router.get("/edit/:articleNumber", authMiddleware, async (req, res) => {
   const { userId } = res.locals.userDB;
