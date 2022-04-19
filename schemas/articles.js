@@ -44,4 +44,4 @@ const ArticlesSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Articles", ArticlesSchema);
+module.exports = mongoose.model("articles", ArticlesSchema);
