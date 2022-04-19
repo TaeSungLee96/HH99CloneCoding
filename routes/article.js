@@ -132,7 +132,6 @@ router.get("/list", authMiddleware, async (req, res) => {
       // 사용자 위치 정보
       const userGu = user.userGu;
       const userDong = user.userDong;
-      console.log(userGu,userDong)
       //위치 정보 매칭
       const List = await Articles.aggregate([
         { $match: { userGu: userGu, userDong: userDong } },
@@ -169,7 +168,7 @@ router.get("/list", authMiddleware, async (req, res) => {
         });
       }
       return res.status(200).json({
-        List,
+        List
        /*  response:"success",
         msg:"조회 성공하셨습니다" */
     });
@@ -241,23 +240,21 @@ router.get("/list", authMiddleware, async (req, res) => {
 router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
   try {
     const { articleNumber } = req.params;
-    console.log(articleNumber)
     const  user  = res.locals.userDB;
     //유저 정보확인
     if (user) {
       if (articleNumber) {
         //articleNumber가 일치하는 것
-        const List = await Articles.find({ articleNumber });
+        const list = await Articles.find({ articleNumber });
         //List.userId가 같은 것만 가져옴
-        const userImage = await Users.findOne({ userId: List.userId })
+        const userImage = await Users.findOne({ userId: list.userId })
           .userImage;
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
+        const List = {list,userImage,totalLike}
+        console.log("상세페이지",List)
         return res.status(200).json({
           List,
-          userImage,
-          totalLike,
-          response: "success",
         });
       }
       res.status(401).json({
