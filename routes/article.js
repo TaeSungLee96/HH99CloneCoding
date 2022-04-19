@@ -128,9 +128,8 @@ router.get("/list", authMiddleware, async (req, res) => {
   try {
     //유저위치기반  조회
     const  user = res.locals.userDB;
-    console.log(user)
     if (user) {
-      // 사용자 위치 정보``
+      // 사용자 위치 정보
       const userGu = user.userGu;
       const userDong = user.userDong;
       console.log(userGu,userDong)
@@ -162,7 +161,6 @@ router.get("/list", authMiddleware, async (req, res) => {
       ])
         .sort("-articleCreatedAt")
         .exec();
-        console.log(List)
       //위치 정보에일치하는 정보가 없을때
       if (Array.isArray(List) && List.length === 0) {
         return res.status(401).json({
@@ -172,8 +170,8 @@ router.get("/list", authMiddleware, async (req, res) => {
       }
       return res.status(200).json({
         List,
-        response:"success",
-        msg:"조회 성공하셨습니다"
+       /*  response:"success",
+        msg:"조회 성공하셨습니다" */
     });
     }
       //검색기능
@@ -262,7 +260,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
           msg: "상세조회 페이지입니다",
         });
       }
-      res.status(400).json({
+      res.status(401).json({
         response: "fail",
         msg: "해당 페이지가 존재하지 않습니다",
       });
