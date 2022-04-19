@@ -94,7 +94,7 @@ router.post("/edit/:articleNumber", authMiddleware, async (req, res) => {
   // 게시글 수정 이미지 받기
   const { path } = req.files.articleImageUrl;
   const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
-  const existsArticles = await Articles.findOne({ articleNumber });
+  const existsArticles = await Articles.findOne({ articleNumber:Number(articleNumber) });
   const DBuserId = existsArticles.userId;
   if (userId == DBuserId) {
     await Articles.updateOne({ articleNumber }, { $set: req.body });
