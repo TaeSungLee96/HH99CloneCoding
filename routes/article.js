@@ -241,9 +241,10 @@ router.get("/list", authMiddleware, async (req, res) => {
 router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
   try {
     const { articleNumber } = req.params;
+    console.log(articleNumber)
     const  user  = res.locals.userDB;
     //유저 정보확인
-    if (user.length > 0) {
+    if (user) {
       if (articleNumber) {
         //articleNumber가 일치하는 것
         const List = await Articles.find({ articleNumber });
