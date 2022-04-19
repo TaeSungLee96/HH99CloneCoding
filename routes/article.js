@@ -172,7 +172,7 @@ router.get("/list", authMiddleware, async (req, res) => {
       }
       return res.status(200).json({
         List,
-        response:"Succeal",
+        response:"success",
         msg:"조회 성공하셨습니다"
     });
     }
@@ -226,7 +226,7 @@ router.get("/list", authMiddleware, async (req, res) => {
                // 조건에 일치 시
                return res.status(200).json({
                    Srech,
-                   response:"Succeal",
+                   response:"success",
                    msg:"조회 성공하셨습니다"
                });
       }
@@ -258,7 +258,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
           List,
           userImage,
           totalLike,
-          response: "Succeal",
+          response: "success",
           msg: "상세조회 페이지입니다",
         });
       }
@@ -291,13 +291,13 @@ router.post("/like", authMiddleware, async (req, res) => {
         await Likes.deleteOne({ articleNumber, userId: user.userId });
         //남은 개수
         const totalLike = (await Likes.find({ articleNumber })).length;
-        return res.status(200).json({ result: "Succeal", totalLike });
+        return res.status(200).json({ result: "success", totalLike });
       }
       // 일치 하는 값이 없을 시 생성
       await Likes.create({ articleNumber, userId: user.userId });
       // 총갯수
       const totalLike = (await Likes.find({ articleNumber })).length;
-      return res.status(200).json({ result: "Succeal", totalLike });
+      return res.status(200).json({ result: "success", totalLike });
     }
     return res.status(401).json({
       response: "fail",
