@@ -162,13 +162,19 @@ router.get("/list", authMiddleware, async (req, res) => {
       ])
         .sort("-articleCreatedAt")
         .exec();
+        console.log(List)
       //위치 정보에일치하는 정보가 없을때
       if (Array.isArray(List) && List.length === 0) {
-        return res.status(401).send({
+        return res.status(401).json({
           response: "fail",
           msg: "조건에 일치하는 게 없습니다",
         });
       }
+      return res.status(200).json({
+        List,
+        response:"success",
+        msg:"조회 성공하셨습니다"
+    });
     }
       //검색기능
       const keyword = req.query.keyword;
@@ -212,7 +218,7 @@ router.get("/list", authMiddleware, async (req, res) => {
                .exec();
               //검색 조건에 일치 하는 게 없을 때
                if(Array.isArray(Srech) && Srech.length === 0)  {
-                   return res.status(401).send({
+                   return res.status(401).json({
                        response:"fail",
                        msg: "조건에 일치하는 게 없습니다"
                    })
@@ -220,13 +226,13 @@ router.get("/list", authMiddleware, async (req, res) => {
                // 조건에 일치 시
                return res.status(200).json({
                    Srech,
-                   response:"Succeal",
+                   response:"success",
                    msg:"조회 성공하셨습니다"
                });
       }
        throw error;
   }catch(error){
-      res.status(400).send({
+      res.status(400).json({
           response:"fail",
           msg: "로그인을 해주십시오"
       })
@@ -252,17 +258,17 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
           List,
           userImage,
           totalLike,
-          response: "Succeal",
+          response: "success",
           msg: "상세조회 페이지입니다",
         });
       }
-      res.status(400).send({
+      res.status(400).json({
         response: "fail",
         msg: "해당 페이지가 존재하지 않습니다",
       });
     }
   } catch (error) {
-    res.status(401).send({
+    res.status(401).json({
       response: "fail",
       msg: "토큰이 유효하지 않습니다.",
     });
@@ -285,20 +291,20 @@ router.post("/like", authMiddleware, async (req, res) => {
         await Likes.deleteOne({ articleNumber, userId: user.userId });
         //남은 개수
         const totalLike = (await Likes.find({ articleNumber })).length;
-        return res.status(200).json({ result: "Succeal", totalLike });
+        return res.status(200).json({ result: "success", totalLike });
       }
       // 일치 하는 값이 없을 시 생성
       await Likes.create({ articleNumber, userId: user.userId });
       // 총갯수
       const totalLike = (await Likes.find({ articleNumber })).length;
-      return res.status(200).json({ result: "Succeal", totalLike });
+      return res.status(200).json({ result: "success", totalLike });
     }
-    return res.status(401).send({
+    return res.status(401).json({
       response: "fail",
       msg: "유효하지 않은 토큰입니다",
     });
   } catch (error) {
-    res.status(400).send({
+    res.status(400).json({
       response: "fail",
       msg: "알수 없는 오류가 발생했습니다.",
     });
