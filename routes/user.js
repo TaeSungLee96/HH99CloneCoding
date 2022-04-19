@@ -33,7 +33,7 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     );
 
     // 쿠키비우기
-    res.clearCookie(); // 프론트분들이 브라우저에 저장한 쿠키명울 매개변수로 넣으면됨
+    res.clearCookie("isLogin"); // 프론트분들이 브라우저에 저장한 쿠키명울 매개변수로 넣으면됨
 
     /// payload에 userId, userGu, userDong 담기
     const payload = { userId, userGu, userDong, userNickname };
@@ -45,9 +45,10 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
 
     // 토큰 생성 및 발급
     const token = jwt.sign(payload, secret, options);
+    console.log("내가 토큰이다[2]", token);
 
     // 쿠키에 바로 저장시키기
-    res.cookie("token", token);
+    res.cookie("isLogin", token);
 
     // 정상응답하기
     res.status(200).json({ msg: "사용자 정보 수정이 완료되었습니다." });
