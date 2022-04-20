@@ -1,6 +1,6 @@
-const app = require("express")();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const express = require("express");
+const app = express();
+// const io = require("socket.io")(server);
 const connect = require("./schemas/index");
 connect();
 const cookieParser = require("cookie-parser");
