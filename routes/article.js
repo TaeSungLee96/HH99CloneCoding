@@ -38,8 +38,9 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     // const articleNumber = (await Articles.countDocuments()) + 1;
     const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
     // 게시글 이미지 받기
+
+    console.log("req.files", req.files);
     const imageInfo = req.files.articleImageUrl;
-    console.log("imageInfo", imageInfo);
 
     const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
     const articleImageUrl =
