@@ -220,6 +220,7 @@ router.get("/list", authMiddleware, async (req, res) => {
 router.get("/list/:keyword", authMiddleware, async (req, res) => {
   try{
      //검색기능
+     const user = res.locals.userDB;
      console.log("1",req.params)
      const keyword = req.params.keyword;
      console.log("keyword",req.params.keyword);
