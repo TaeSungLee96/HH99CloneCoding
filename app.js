@@ -1,6 +1,6 @@
-const app = require("express")();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const express = require("express");
+const app = express();
+// const io = require("socket.io")(server);
 const connect = require("./schemas/index");
 connect();
 const cookieParser = require("cookie-parser");
@@ -26,19 +26,19 @@ const requestMiddleware = (req, res, next) => {
 };
 
 // 각종 미들웨어
-server.use(cors({ credentials: true }));
-server.use(express.json());
-server.use(cookieParser());
-server.use(requestMiddleware);
-server.use(express.urlencoded({ extended: false }));
-server.use(express.static("uploads"));
+app.use(cors({ credentials: true }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(requestMiddleware);
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static("uploads"));
 
 //라우터 연결
-server.use("/main", [mainRouter]);
-server.use("/user", [userRouter]);
-server.use("/article", [articleRouter]);
+app.use("/main", [mainRouter]);
+app.use("/user", [userRouter]);
+app.use("/article", [articleRouter]);
 
 // 서버 열기
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(port, "포트로 서버가 켜졌어요!");
 });
