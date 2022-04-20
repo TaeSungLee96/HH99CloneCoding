@@ -57,6 +57,8 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       req.originalUrl +
       articleImageUrlRaw;
 
+    console.log(articleImageUrl);
+
     const createArticles = await Articles.create({
       articleTitle,
       articleContent,
