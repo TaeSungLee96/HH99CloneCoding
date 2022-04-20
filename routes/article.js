@@ -207,69 +207,7 @@ router.get("/list", authMiddleware, async (req, res) => {
         msg:"조회 성공하셨습니다" */
       });
     }
-    //검색기능
-    console.log("1",req.query)
-    const keyword = req.query.keyword;
-    console.log("keyword",req.query.keyword);
-    //검색어가 있는 지 확인
-    if (keyword) {
-      //array생성
-      let option = [];
-      //조건문
-      if (option) {
-        //정규식(articleTitle키값은 밸류 req.qurey.item설정)
-        option = [{ articleTitle: new RegExp(keyword) }];
-      }
-      //db에서 검색
-      const Srech = await Articles.aggregate([
-        //조건에 맞게 검색
-        {
-          $match: {$or: option}
-        },{$match: {userGu:user.userGu,userDong:user.userDong}},
-        //db에 다른 컬렉션 연결
-        {
-          $lookup: {
-            from: "articlelike",
-            localField: "articleNumber",
-            foreignField: "articleNumber",
-            as: "Like",
-          },
-        },
-        // 객체를 가공하여 보여 주고 싶은 것들만 보여줌
-        {
-          $project: {
-            _id: 1,
-            articleNumber: 1,
-            articleTitle: 1,
-            articleContent: 1,
-            userId: 1,
-            userNickname: 1,
-            userGu: 1,
-            userDong: 1,
-            articleCreatedAt: 1,
-            articleImageUrl: 1,
-            articlePrice: 1,
-            likeCount: { $size: "$Like" },
-          },
-        },
-      ])
-        .sort("-articleCreatedAt")
-        .exec();
-      //검색 조건에 일치 하는 게 없을 때
-      if (Array.isArray(Srech) && Srech.length === 0) {
-        return res.status(401).json({
-          response: "fail",
-          msg: "조건에 일치하는 게 없습니다",
-        });
-      }
-      console.log(Srech);
-      // 조건에 일치 시
-      return res.status(200).json({
-        Srech,
-        response: "success",
-        msg: "조회 성공하셨습니다",
-      });
-    }
+   
     throw error;
   } catch (error) {
     res.status(400).json({
@@ -277,6 +215,82 @@ router.get("/list", authMiddleware, async (req, res) => {
       msg: "로그인을 해주십시오",
     });
   }
+});
+//검색기능
+router.get("/list/:keyword", authMiddleware, async (req, res) => {
+  try{
+     //검색기능
+     console.log("1",req.params)
+     const keyword = req.params.keyword;
+     console.log("keyword",req.params.keyword);
+     //검색어가 있는 지 확인
+     if (keyword) {
+       //array생성
+       let option = [];
+       //조건문
+       if (option) {
+         //정규식(articleTitle키값은 밸류 req.qurey.item설정)
+         option = [{ articleTitle: new RegExp(keyword) }];
+       }
+       //db에서 검색
+       const Srech = await Articles.aggregate([
+         //조건에 맞게 검색
+         {
+           $match: {$or: option}
+         },{$match: {userGu:user.userGu,userDong:user.userDong}},
+         //db에 다른 컬렉션 연결
+         {
+           $lookup: {
+             from: "articlelike",
+             localField: "articleNumber",
+             foreignField: "articleNumber",
+             as: "Like",
+           },
+         },
+         // 객체를 가공하여 보여 주고 싶은 것들만 보여줌
+         {
+           $project: {
+             _id: 1,
+             articleNumber: 1,
+             articleTitle: 1,
+             articleContent: 1,
+             userId: 1,
+             userNickname: 1,
+             userGu: 1,
+             userDong: 1,
+             articleCreatedAt: 1,
+             articleImageUrl: 1,
+             articlePrice: 1,
+             likeCount: { $size: "$Like" },
+           },
+         },
+       ])
+         .sort("-articleCreatedAt")
+         .exec();
+       //검색 조건에 일치 하는 게 없을 때
+       if (Array.isArray(Srech) && Srech.length === 0) {
+         return res.status(401).json({
+           response: "fail",
+           msg: "조건에 일치하는 게 없습니다",
+         });
+       }
+       console.log(Srech);
+       // 조건에 일치 시
+       return res.status(200).json({
+         Srech,
+         response: "success",
+         msg: "조회 성공하셨습니다",
+       });
+     }
+     throw error;
+
+  }catch(error){
+    res.status(400).json({
+      response: "fail",
+      msg: "로그인을 해주십시오",
+    });
+
+  };
 });
 
 //article 상세페이지
