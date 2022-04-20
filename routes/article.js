@@ -278,7 +278,7 @@ router.get("/list/:keyword", authMiddleware, async (req, res) => {
        console.log(Srech);
        // 조건에 일치 시
        return res.status(200).json({
-         Srech,
+         list,
          response: "success",
          msg: "조회 성공하셨습니다",
        });
