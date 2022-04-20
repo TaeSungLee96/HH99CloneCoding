@@ -234,7 +234,7 @@ router.get("/list/:keyword", authMiddleware, async (req, res) => {
          option = [{ articleTitle: new RegExp(keyword) }];
        }
        //db에서 검색
-       const Srech = await Articles.aggregate([
+       const list = await Articles.aggregate([
          //조건에 맞게 검색
          {
            $match: {$or: option}
@@ -269,7 +269,7 @@ router.get("/list/:keyword", authMiddleware, async (req, res) => {
          .sort("-articleCreatedAt")
          .exec();
        //검색 조건에 일치 하는 게 없을 때
-       if (Array.isArray(Srech) && Srech.length === 0) {
+       if (Array.isArray(list) && list.length === 0) {
          return res.status(401).json({
            response: "fail",
            msg: "조건에 일치하는 게 없습니다",
