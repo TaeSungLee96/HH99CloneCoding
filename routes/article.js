@@ -223,7 +223,7 @@ router.get("/list", authMiddleware, async (req, res) => {
       const Srech = await Articles.aggregate([
         //조건에 맞게 검색
         {
-          $match: { $or: option, userGu: user.userGu, userDong: user.userDong },
+          $match: { $or: option },userGu: user.userGu, userDong: user.userDong
         },
         //db에 다른 컬렉션 연결
         {
