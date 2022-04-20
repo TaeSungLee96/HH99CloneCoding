@@ -50,11 +50,7 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     const imageInfo = req.files.articleImageUrl;
     const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
     const articleImageUrl =
-      req.protocol +
-      "://" +
-      req.get("host") +
-      req.originalUrl +
-      articleImageUrlRaw;
+      req.protocol + "://" + req.get("host") + articleImageUrlRaw;
 
     console.log(articleImageUrl);
 
@@ -120,11 +116,7 @@ router.post(
 
     const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
     const articleImageUrl =
-      req.protocol +
-      "://" +
-      req.get("host") +
-      req.originalUrl +
-      articleImageUrlRaw;
+      req.protocol + "://" + req.get("host") + articleImageUrlRaw;
 
     const existsArticles = await Articles.findOne({
       articleNumber: Number(articleNumber),

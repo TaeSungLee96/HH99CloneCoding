@@ -38,8 +38,7 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
     // 수정 할 프로필 이미지 받기
     const imageInfo = req.files.userImage;
     const userImageRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
-    const userImage =
-      req.protocol + "://" + req.get("host") + req.originalUrl + userImageRaw;
+    const userImage = req.protocol + "://" + req.get("host") + userImageRaw;
 
     // 기존 토큰에서 userId 추출
     const user = res.locals.userDB; // 인증미들웨어에서 제공하는 전역변수
