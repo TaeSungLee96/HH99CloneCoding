@@ -221,7 +221,6 @@ router.get("/list", authMiddleware, async (req, res) => {
       }
       //db에서 검색
       const Srech = await Articles.aggregate([
-        {userGu:user.userGu,userDong:user.userDong},
         //조건에 맞게 검색
         {
           $match: {$or: option}
