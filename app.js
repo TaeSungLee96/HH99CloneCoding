@@ -8,6 +8,7 @@ const port = 3000;
 const mainRouter = require("./routes/main");
 const userRouter = require("./routes/user");
 const articleRouter = require("./routes/article");
+// const chatRouter = require("./routes/chat");
 
 // http server를 socket.io server로 upgrade한다
 const server = require("http").createServer(app);
@@ -44,7 +45,12 @@ app.use("/user", [userRouter]);
 app.use("/article", [articleRouter]);
 // app.use("/chat", [chatRouter]);
 
-// chat 경로로 서버에 접속하면 클라이언트로 index.html을 전송한다
+// // 서버 열기
+// app.listen(port, () => {
+//   console.log(port, "포트로 서버가 켜졌어요!");
+// });
+
+// 3000경로로 서버에 접속하면 클라이언트로 index.html을 전송한다
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index-room.html");
 });
@@ -64,7 +70,6 @@ var chat = io.of("/chat").on("connection", function (socket) {
   });
 });
 
-// // 서버 열기
-app.listen(port, () => {
-  console.log(port, "포트로 서버가 켜졌어요!");
+server.listen(3000, function () {
+  console.log("Socket IO server listening on port 3000");
 });
