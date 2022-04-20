@@ -208,8 +208,9 @@ router.get("/list", authMiddleware, async (req, res) => {
       });
     }
     //검색기능
+    console.log("1",req.query)
     const keyword = req.query.keyword;
-    console.log(keyword);
+    console.log("keyword",req.query.keyword);
     //검색어가 있는 지 확인
     if (keyword) {
       //array생성
