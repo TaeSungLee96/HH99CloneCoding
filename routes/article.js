@@ -47,9 +47,16 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     // const articleNumber = (await Articles.countDocuments()) + 1;
     const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
     // 게시글 이미지 받기
-    const { path } = req.files.articleImageUrl;
+    const imageInfo = req.files.articleImageUrl;
     console.log("이게 이미지 경로다!!!!!", path);
-    const articleImageUrl = path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+    const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+    const articleImageUrl =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      req.originalUrl +
+      articleImageUrlRaw;
+
     const createArticles = await Articles.create({
       articleTitle,
       articleContent,
@@ -109,7 +116,14 @@ router.post(
 
     const imageInfo = req.files.articleImageUrl;
 
-    const articleImageUrl = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+    const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+    const articleImageUrl =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      req.originalUrl +
+      articleImageUrlRaw;
+
     const existsArticles = await Articles.findOne({
       articleNumber: Number(articleNumber),
     });
@@ -135,6 +149,7 @@ router.post(
   }
 );
 
+//게시글 수정 전 - 원본데이터 내려주기
 router.get("/edit/:articleNumber", authMiddleware, async (req, res) => {
   const { userId } = res.locals.userDB;
   const articleNumber = req.params.articleNumber;
@@ -146,7 +161,6 @@ router.get("/edit/:articleNumber", authMiddleware, async (req, res) => {
 });
 
 //조회
-
 //사용자위치 기반  article
 router.get("/list", authMiddleware, async (req, res) => {
   try {
