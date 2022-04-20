@@ -225,7 +225,7 @@ router.get("/list", authMiddleware, async (req, res) => {
         //조건에 맞게 검색
         {
           $match: {$or: option}
-        },
+        },{$match: {userGu:user.userGu,userDong:user.userDong}},
         //db에 다른 컬렉션 연결
         {
           $lookup: {
