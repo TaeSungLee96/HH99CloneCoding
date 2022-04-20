@@ -322,6 +322,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         msg: "해당 페이지가 존재하지 않습니다",
       });
     }
+    throw error;
   } catch (error) {
     res.status(401).json({
       response: "fail",
