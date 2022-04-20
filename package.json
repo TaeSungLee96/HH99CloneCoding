@@ -18,7 +18,7 @@
     "moment": "^2.29.2",
     "mongoose": "^6.3.0",
     "nodemon": "^2.0.15",
-    "socket.io": "4.4.1"
+    "socket.io": "^4.4.1"
   },
   "repository": {
     "type": "git",
