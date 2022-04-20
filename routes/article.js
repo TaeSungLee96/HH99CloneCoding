@@ -34,6 +34,7 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       userGu,
       userDong
     );
+
     // articleNumber이 제일 큰 document 가져오기
     const maxNumber = await Articles.findOne().sort("-articleNumber");
     // DB에 article이 0개일때 초기값 articlNumber = 1
@@ -200,7 +201,7 @@ router.get("/list", authMiddleware, async (req, res) => {
     }
     //검색기능
     const keyword = req.query.keyword;
-    console.log(keyword)
+    console.log(keyword);
     //검색어가 있는 지 확인
     if (keyword) {
       //array생성
@@ -252,7 +253,7 @@ router.get("/list", authMiddleware, async (req, res) => {
           msg: "조건에 일치하는 게 없습니다",
         });
       }
-      console.log(Srech)
+      console.log(Srech);
       // 조건에 일치 시
       return res.status(200).json({
         Srech,
