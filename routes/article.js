@@ -170,6 +170,8 @@ router.get("/list", authMiddleware, async (req, res) => {
           $project: {
             _id: 1,
             articleNumber: 1,
+            articleTitle: 1,
+            articleContent: 1,
             userId: 1,
             userNickname: 1,
             userGu: 1,
@@ -198,6 +200,7 @@ router.get("/list", authMiddleware, async (req, res) => {
     }
     //검색기능
     const keyword = req.query.keyword;
+    console.log(keyword)
     //검색어가 있는 지 확인
     if (keyword) {
       //array생성
@@ -227,6 +230,8 @@ router.get("/list", authMiddleware, async (req, res) => {
           $project: {
             _id: 1,
             articleNumber: 1,
+            articleTitle: 1,
+            articleContent: 1,
             userId: 1,
             userNickname: 1,
             userGu: 1,
@@ -247,6 +252,7 @@ router.get("/list", authMiddleware, async (req, res) => {
           msg: "조건에 일치하는 게 없습니다",
         });
       }
+      console.log(Srech)
       // 조건에 일치 시
       return res.status(200).json({
         Srech,
