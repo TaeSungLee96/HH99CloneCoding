@@ -230,7 +230,7 @@ router.get("/list/:keyword", authMiddleware, async (req, res) => {
        let option = [];
        //조건문
        if (option) {
-         //정규식(articleTitle키값은 밸류 req.qurey.item설정)
+         //정규식(articleTitle키값은 밸류 req.params.keyword설정)
          option = [{ articleTitle: new RegExp(keyword) }];
        }
        //db에서 검색
@@ -313,6 +313,8 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         console.log("상세페이지", List);
         return res.status(200).json({
           List,
+          response: "success",
+          msg: "조회 성공하셨습니다",
         });
       }
       res.status(401).json({
