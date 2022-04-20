@@ -45,7 +45,7 @@
           news = io('/news');
 
       $("form").submit(function(e) {
-        e.preventDefault();
+        e.preventDefault(); //sumit 실행으로 페이지가 reload되어 초기화면으로 돌아가는 것 방지
 
         // 서버로 자신의 정보를 전송한다.
         chat.emit("chat message", {
