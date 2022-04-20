@@ -36,13 +36,13 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     );
 
     // articleNumber이 제일 큰 document 가져오기
-    const maxNumber = await Articles.findOne().sort("-articleNumber");
+    // const maxNumber = await Articles.findOne().sort("-articleNumber");
     // DB에 article이 0개일때 초기값 articleNumber = 1
     let articleNumber = 1;
     // DB에 article이 1개이상일때 articleNumber = DB에서 articleNumber숫자 중 최대값 + 1
-    if (maxNumber) {
-      articleNumber = maxNumber.articleNumber + 1;
-    }
+    // if (maxNumber) {
+    //   articleNumber = maxNumber.articleNumber + 1;
+    // }
 
     // const articleNumber = (await Articles.countDocuments()) + 1;
     const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
