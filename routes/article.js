@@ -74,6 +74,7 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     res.status(200).json({ createArticles });
     console.log(createArticles);
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       response: "fail",
       msg: "양식에 맞추어 모든 내용을 작성해주세요",
