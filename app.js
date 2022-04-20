@@ -12,6 +12,7 @@ const articleRouter = require("./routes/article");
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 // http server를 socket.io server로 upgrade한다
+//const Articles = require("../schemas/articles");
 
 
 // 접속 로그 남기기
@@ -56,18 +57,26 @@ app.get('/', function(req, res) {
 
 // namespace /chat에 접속한다.
 var chat = io.of('/chat').on('connection', function(socket) {
+  console.log('클라이언트 연결됨. 소켓 id는 : ', socket.id);
   socket.on('chat message', function(data){
     console.log('message from client: ', data);
 
     var name = socket.name = data.name;
     var room = socket.room = data.room;
-
+    
     // room에 join한다
     socket.join(room);
     // room에 join되어 있는 클라이언트에게 메시지를 전송한다
     chat.to(room).emit('chat message', data.msg);
+    });
+    
+    socket.on('disconnect', function(){   //2-2
+      console.log('사용자 연결 종료 ::', socket.id);
   });
 });
+
+  
+
 
 server.listen(3000, function() {
   console.log('Socket IO server listening on port 3000');
