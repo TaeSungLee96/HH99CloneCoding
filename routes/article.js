@@ -275,7 +275,7 @@ router.get("/list/:keyword", authMiddleware, async (req, res) => {
            msg: "조건에 일치하는 게 없습니다",
          });
        }
-       console.log(Srech);
+       console.log(list);
        // 조건에 일치 시
        return res.status(200).json({
          list,
