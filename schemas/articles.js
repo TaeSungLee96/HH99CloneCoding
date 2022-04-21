@@ -38,6 +38,10 @@ const ArticlesSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  articlelastUpdatedAt: {
+    type: String,
+    required: true,
+  },
   articleImageUrl_1: {
     type: String,
     required: true,

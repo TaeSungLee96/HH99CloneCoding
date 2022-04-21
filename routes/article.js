@@ -38,6 +38,9 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     // 게시글 최초 작성시간
     const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
 
+    // 게시글 최종 수정시간
+    const articlelastUpdatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
+
     // 게시글 이미지 받기
     console.log("<각오해라잉> :", req);
     console.log("----------------구분선--------------");
@@ -105,6 +108,7 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       userDong,
       articleNumber,
       articleCreatedAt,
+      articlelastUpdatedAt,
     });
     res.status(200).json({ createArticles });
   } catch (err) {
@@ -116,9 +120,9 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
   }
 });
 
-// (입력 값) articleTitle  articleContent  articleImageUrl articlePrice
+//(입력 값) articleTitle  articleContent  articleImageUrl articlePrice
 //(헤더 토큰 값) userId  userNickname  userGu  userDong
-//(server 지정 값) articleNumber  articleCreatedAt
+//(server 지정 값) articleNumber  articleCreatedAt articlelastUpdatedAt
 //(DB 빼올 값) userImage
 
 //게시글 삭제
@@ -146,6 +150,9 @@ router.post(
     const { userId } = res.locals.userDB;
     const articleNumber = req.params.articleNumber;
     const { articleTitle, articleContent, articlePrice } = req.body;
+
+    // 게시글 최종 수정시간 수정
+    const articlelastUpdatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
 
     // 게시글 수정 이미지 받기
     const imageInfo_1 = req.files.articleImageUrl1;
@@ -198,6 +205,7 @@ router.post(
             articleTitle,
             articleContent,
             articlePrice,
+            articlelastUpdatedAt,
             articleImageUrl_1,
             articleImageUrl_2,
             articleImageUrl_3,
