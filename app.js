@@ -12,7 +12,7 @@ const articleRouter = require("./routes/article");
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 // http server를 socket.io server로 upgrade한다
-//const Articles = require("../schemas/articles");
+
 
 
 // 접속 로그 남기기
@@ -50,33 +50,66 @@ app.use("/article", [articleRouter]);
 //   console.log(port, "포트로 서버가 켜졌어요!");
 // });
 
-// 3000경로로 서버에 접속하면 클라이언트로 index.html을 전송한다
+
+
+//3000경로로 서버에 접속하면 클라이언트로 index.html을 전송한다
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index-room.html');
 });
 
-// namespace /chat에 접속한다.
-var chat = io.of('/chat').on('connection', function(socket) {
-  console.log('클라이언트 연결됨. 소켓 id는 : ', socket.id);
-  socket.on('chat message', function(data){
-    console.log('message from client: ', data);
 
-    var name = socket.name = data.name;
-    var room = socket.room = data.room;
-    
-    // room에 join한다
-    socket.join(room);
-    // room에 join되어 있는 클라이언트에게 메시지를 전송한다
-    chat.to(room).emit('chat message', data.msg);
+let room = ['room1', 'room2'];
+let a = 0;
+
+io.on('connection', (socket) => {
+  console.log(socket.id)
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+  socket.on('disconnect', function(){   //2-2
+    console.log('사용자 연결 종료 ::', socket.id);
+});
+
+  // socket.on('leaveRoom', (num, name) => {
+  //   socket.leave(room[num], () => { 
+  //     console.log(name + ' leave a ' + room[num]);
+  //     io.to(room[num]).emit('leaveRoom', num, name);
+  //   });
+  // });
+
+
+  socket.on('joinRoom', (num, name) => {
+    socket.join(room[num], () => {//배열 찾을 때 index 적용 어려울 듯
+      console.log(name + ' join a ' + room[num]);
+      io.to(room[num]).emit('joinRoom', num, name);
     });
-    
-    socket.on('disconnect', function(){   //2-2
-      console.log('사용자 연결 종료 ::', socket.id);
+  });
+
+
+  socket.on('chat message', (num, name, msg) => {
+    a = num;
+    io.to(room[a]).emit('chat message', name, msg);
   });
 });
 
-  
+// // namespace 임의생성 후 연결
+// var chat = io.on('connection', function(socket) {
+//   console.log('클라이언트 연결됨. 소켓 id는 : ', socket.id);
+//   socket.on('chat message', function(data){
+//     console.log('message from client: ', data);
 
+//     var name = socket.name = data.name;
+//     var room = socket.room = data.room;
+    
+//     // room에 join한다
+//     socket.join(room);
+//     // room에 join되어 있는 클라이언트에게 메시지를 전송한다
+//     chat.to(room).emit('chat message', data.msg);
+//     });
+    
+
+// });
 
 server.listen(3000, function() {
   console.log('Socket IO server listening on port 3000');

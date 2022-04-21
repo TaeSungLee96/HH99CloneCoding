@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <title>Socket.io Chat Example</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
 </head>
 <body>
   <div class="container">
@@ -39,10 +41,52 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    
+    
+    $(() => {
+    const name = prompt('What your name');//userNickname 받아오기
+    const socket = io();
+    let room = ['room1', 'room2'];
+    let num = 0;
+
+    socket.emit('joinRoom', num, name);
+
+    $('select').change(() => {//이벤트 발생이 방 선택이 아닌 onclick등으로 변경
+      socket.emit('leaveRoom', num, name);
+      num++;
+      num = num % 2; //여기서 num은 articleNumber+userId(구매자) 등으로 변경
+      socket.emit('joinRoom', num, name);
+    });
+
+
+    $('form').submit(() => {
+      socket.emit('chat message', num, name, $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+
+    socket.on('chat message', (name, msg) => {
+      $('#messages').append($('<li>').text(name + '  :  ' +
+        msg));
+    });
+
+    socket.on('leaveRoom', (num, name) => {
+      $('#messages').append($('<li>').text(name + '    leaved '
+        + room[num] + ' :('));
+    });
+
+    socket.on('joinRoom', (num, name) => {
+      $('#messages').append($('<li>').text(name + '    joined '
+        + room[num] + ':)'));
+    });
+  });
+    
+    
+    
     $(function() {
       // 지정 namespace로 접속한다
-      var chat = io('http://localhost:3000/chat'),
-          news = io('/news');
+      var chat = io('http://localhost:3000'),
+          
 
       $("form").submit(function(e) {
         e.preventDefault();
