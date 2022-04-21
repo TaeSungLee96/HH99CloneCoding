@@ -36,10 +36,10 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     }
 
     // 게시글 최초 작성시간
-    const articleCreatedAt = moment().locale("ko").format("YYYY-MM-DD HH:mm:ss");
+    const articleCreatedAt = moment.locale("ko").format("YYYY-MM-DD HH:mm:ss");
 
     // 게시글 최종 수정시간
-    const articlelastUpdatedAt = moment().locale("ko").format("YYYY-MM-DD HH:mm:ss");
+    const articlelastUpdatedAt = moment.locale("ko").format("YYYY-MM-DD HH:mm:ss");
 
     // 게시글 이미지 받기
     console.log("<각오해라잉> :", req);
@@ -152,7 +152,7 @@ router.post(
     const { articleTitle, articleContent, articlePrice } = req.body;
 
     // 게시글 최종 수정시간 수정
-    const articlelastUpdatedAt = moment().locale("ko").format("YYYY-MM-DD HH:mm:ss");
+    const articlelastUpdatedAt = moment.locale("ko").format("YYYY-MM-DD HH:mm:ss");
 
     // 게시글 수정 이미지 받기
     const imageInfo_1 = req.files.articleImageUrl1;
