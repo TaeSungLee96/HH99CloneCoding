@@ -415,23 +415,28 @@ router.post("/like", authMiddleware, async (req, res) => {
     if (user) {
       //사용유자가 같은 상품에 좋아요를 했는지 확인
       const like = await Likes.find({ articleNumber, userId: user.userId });
-      if (like) {
+      console.log("[like]", like);
+      if (like.length) {
         //일치하는 갚은 있으면 삭제
         await Likes.deleteOne({ articleNumber, userId: user.userId });
         //남은 개수
         const totalLike = (await Likes.find({ articleNumber })).length;
-        return res.status(200).json({ result: "success", totalLike });
+        console.log("[delete]", totalLike);
+        return res
+          .status(200)
+          .json({ result: "success", totalLike, status: false });
+      } else {
+        // 일치 하는 값이 없을 시 생성
+        console.log("[만들어지나?]", articleNumber, user.userId);
+        await Likes.create({ articleNumber, userId: user.userId });
+        // 총갯수
+        const totalLike = (await Likes.find({ articleNumber })).length;
+        console.log("[create]", totalLike);
+        return res
+          .status(200)
+          .json({ result: "success", totalLike, status: true });
       }
-      // 일치 하는 값이 없을 시 생성
-      await Likes.create({ articleNumber, userId: user.userId });
-      // 총갯수
-      const totalLike = (await Likes.find({ articleNumber })).length;
-      return res.status(200).json({ result: "success", totalLike });
     }
-    return res.status(401).json({
-      response: "fail",
-      msg: "유효하지 않은 토큰입니다",
-    });
   } catch (error) {
     res.status(400).json({
       response: "fail",
