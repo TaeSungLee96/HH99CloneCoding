@@ -47,7 +47,7 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
 
     const userInfo = await Users.findOne({ userId });
     console.log("[userInfo] ; ", userInfo);
-    const userImage = userInfo.userImage;
+    const { userImage } = userInfo;
     console.log("[userImage] ; ", userImage);
 
     const createArticles = await Articles.create({

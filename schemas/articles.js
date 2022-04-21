@@ -10,6 +10,10 @@ const ArticlesSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  userImage: {
+    type: String,
+    required: true,
+  },
   userNickname: {
     type: String,
     required: true,
