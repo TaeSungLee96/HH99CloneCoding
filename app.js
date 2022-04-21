@@ -10,7 +10,7 @@ const mainRouter = require("./routes/main");
 const userRouter = require("./routes/user");
 const articleRouter = require("./routes/article");
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const io = require("socket.io")(server, { cors: { origin: "*" } });
 // http server를 socket.io server로 upgrade한다
 
 
