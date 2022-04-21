@@ -44,11 +44,9 @@ const ArticlesSchema = mongoose.Schema({
   },
   articleImageUrl_2: {
     type: String,
-    required: true,
   },
   articleImageUrl_3: {
     type: String,
-    required: true,
   },
   articlePrice: {
     type: Number,
