@@ -296,7 +296,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
     if (user) {
       if (articleNumber) {
         //articleNumber가 일치하는 것
-        const list = await Articles.findOne({ articleNumber });
+        const list = await Articles.find({ articleNumber });
         console.log("이게 리스트다!!!!",list)
         //List.userId가 같은 것만 가져옴
         const users = await Users.findOne({ userId: list.userId });
