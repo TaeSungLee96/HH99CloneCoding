@@ -257,7 +257,9 @@ router.get("/list", authMiddleware, async (req, res) => {
             userGu: 1,
             userDong: 1,
             articleCreatedAt: 1,
-            articleImageUrl: 1,
+            articleImageUrl_1: 1,
+            articleImageUrl_2: 1,
+            articleImageUrl_3: 1,
             articlePrice: 1,
             likeCount: { $size: "$Like" },
           },
@@ -287,6 +289,7 @@ router.get("/list", authMiddleware, async (req, res) => {
     });
   }
 });
+
 //검색기능
 router.get("/list/:keyword", authMiddleware, async (req, res) => {
   try {
