@@ -6,7 +6,9 @@ const Users = require("../schemas/users");
 const Likes = require("../schemas/articleLikes");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
-const moment = require("moment");
+const moment = require('moment'); 
+require('moment-timezone');
+moment.tz.setDefault("Asia/Seoul");
 const authMiddleware = require("../middleware/authMiddleware");
 const multipart = require("connect-multiparty"); // 사진data 핸들링 라이브러리
 const imgMiddleware = multipart({
@@ -36,10 +38,10 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     }
 
     // 게시글 최초 작성시간
-    const articleCreatedAt = moment.locale("ko").format("YYYY-MM-DD HH:mm:ss");
+    const articleCreatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
 
     // 게시글 최종 수정시간
-    const articlelastUpdatedAt = moment.locale("ko").format("YYYY-MM-DD HH:mm:ss");
+    const articlelastUpdatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
 
     // 게시글 이미지 받기
     console.log("<각오해라잉> :", req);
@@ -152,7 +154,8 @@ router.post(
     const { articleTitle, articleContent, articlePrice } = req.body;
 
     // 게시글 최종 수정시간 수정
-    const articlelastUpdatedAt = moment.locale("ko").format("YYYY-MM-DD HH:mm:ss");
+     
+    const articlelastUpdatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
 
     // 게시글 수정 이미지 받기
     const imageInfo_1 = req.files.articleImageUrl1;
