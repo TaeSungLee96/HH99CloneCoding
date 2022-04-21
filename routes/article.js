@@ -240,7 +240,7 @@ router.get("/list", authMiddleware, async (req, res) => {
         { $match: { userGu: userGu, userDong: userDong } },
         {
           $lookup: {
-            from: "articlelike",
+            from: "articlelikes",
             localField: "articleNumber",
             foreignField: "articleNumber",
             as: "Like",
