@@ -43,10 +43,48 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     console.log("----------------구분선--------------");
     console.log("<이미지 파일> :", req.files);
 
-    const imageInfo = req.files.articleImageUrl;
-    const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
-    const articleImageUrl =
-      req.protocol + "://" + req.get("host") + articleImageUrlRaw;
+    const imageInfo_1 = req.files.articleImageUrl1.articleImageUrl;
+    const imageInfo_2 = req.files.articleImageUrl2.articleImageUrl;
+    const imageInfo_3 = req.files.articleImageUrl3.articleImageUrl;
+
+    console.log("----------------구분선2--------------");
+    console.log("<imageInfo_1> :", imageInfo_1);
+    console.log("<imageInfo_2> :", imageInfo_2);
+    console.log("<imageInfo_3> :", imageInfo_3);
+
+    // 사진 1개 업로드
+    if (imageInfo_2 === undefined) {
+      const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+
+      var articleImageUrl_1 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_1;
+      var articleImageUrl_2 = undefined;
+      var articleImageUrl_3 = undefined;
+    }
+    // 사진 2개 업로드
+    else if (imageInfo_3 === undefined) {
+      const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+      const articleImageUrlRaw_2 = imageInfo_2.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+
+      var articleImageUrl_1 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_1;
+      var articleImageUrl_2 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_2;
+      var articleImageUrl_3 = undefined;
+    }
+    // 사진 3개 업로드
+    else if (imageInfo_3 !== undefined) {
+      const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+      const articleImageUrlRaw_2 = imageInfo_2.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+      const articleImageUrlRaw_3 = imageInfo_3.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+
+      var articleImageUrl_1 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_1;
+      var articleImageUrl_2 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_2;
+      var articleImageUrl_3 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_3;
+    }
 
     // 유저 프로필 이미지 찾기
     const userInfo = await Users.findOne({ userId });
@@ -56,7 +94,9 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     const createArticles = await Articles.create({
       articleTitle,
       articleContent,
-      articleImageUrl,
+      articleImageUrl_1,
+      articleImageUrl_2,
+      articleImageUrl_3,
       articlePrice,
       userId,
       userImage,
@@ -108,11 +148,43 @@ router.post(
     const { articleTitle, articleContent, articlePrice } = req.body;
 
     // 게시글 수정 이미지 받기
-    const imageInfo = req.files.articleImageUrl;
+    const imageInfo_1 = req.files.articleImageUrl1.articleImageUrl;
+    const imageInfo_2 = req.files.articleImageUrl2.articleImageUrl;
+    const imageInfo_3 = req.files.articleImageUrl3.articleImageUrl;
 
-    const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
-    const articleImageUrl =
-      req.protocol + "://" + req.get("host") + articleImageUrlRaw;
+    // 사진 1개 업로드
+    if (imageInfo_2 === undefined) {
+      const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+
+      var articleImageUrl_1 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_1;
+      var articleImageUrl_2 = undefined;
+      var articleImageUrl_3 = undefined;
+    }
+    // 사진 2개 업로드
+    else if (imageInfo_3 === undefined) {
+      const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+      const articleImageUrlRaw_2 = imageInfo_2.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+
+      var articleImageUrl_1 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_1;
+      var articleImageUrl_2 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_2;
+      var articleImageUrl_3 = undefined;
+    }
+    // 사진 3개 업로드
+    else if (imageInfo_3 !== undefined) {
+      const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+      const articleImageUrlRaw_2 = imageInfo_2.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+      const articleImageUrlRaw_3 = imageInfo_3.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
+
+      var articleImageUrl_1 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_1;
+      var articleImageUrl_2 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_2;
+      var articleImageUrl_3 =
+        req.protocol + "://" + req.get("host") + articleImageUrlRaw_3;
+    }
 
     const existsArticles = await Articles.findOne({
       articleNumber: Number(articleNumber),
@@ -122,7 +194,14 @@ router.post(
       await Articles.updateOne(
         { articleNumber },
         {
-          $set: { articleTitle, articleContent, articlePrice, articleImageUrl },
+          $set: {
+            articleTitle,
+            articleContent,
+            articlePrice,
+            articleImageUrl_1,
+            articleImageUrl_2,
+            articleImageUrl_3,
+          },
         }
       );
 
@@ -138,10 +217,11 @@ router.post(
 router.get("/edit/:articleNumber", authMiddleware, async (req, res) => {
   const { userId } = res.locals.userDB;
   const articleNumber = req.params.articleNumber;
+
   const existsArticles = await Articles.findOne({ articleNumber });
   const existsUsers = await Users.findOne({ userId });
   const userImage = existsUsers.userImage;
-  console.log({ existsArticles, existsUsers, userImage });
+
   res.json({ existsArticles, userImage });
 });
 

@@ -38,7 +38,15 @@ const ArticlesSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  articleImageUrl: {
+  articleImageUrl_1: {
+    type: String,
+    required: true,
+  },
+  articleImageUrl_2: {
+    type: String,
+    required: true,
+  },
+  articleImageUrl_3: {
     type: String,
     required: true,
   },
