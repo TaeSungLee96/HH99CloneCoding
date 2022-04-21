@@ -35,21 +35,24 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       articleNumber = maxNumber.articleNumber + 1;
     }
 
-    // const articleNumber = (await Articles.countDocuments()) + 1;
+    // 게시글 최초 작성시간
     const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
+
     // 게시글 이미지 받기
+    console.log("<각오해라잉> :", req);
+    console.log("----------------구분선--------------");
+    console.log("<이미지 파일> :", req.files);
 
     const imageInfo = req.files.articleImageUrl;
-
     const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
     const articleImageUrl =
       req.protocol + "://" + req.get("host") + articleImageUrlRaw;
 
+    // 유저 프로필 이미지 찾기
     const userInfo = await Users.findOne({ userId });
-    console.log("[userInfo] ; ", userInfo);
     const { userImage } = userInfo;
-    console.log("[userImage] ; ", userImage);
 
+    // 게시글 등록 및 변수할당 하기
     const createArticles = await Articles.create({
       articleTitle,
       articleContent,
