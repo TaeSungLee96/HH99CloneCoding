@@ -68,9 +68,9 @@ io.on("connection", (socket)=> {
        io.emit("receive message", { name: item.name, message: item.message });
        //클라이언트에 이벤트를 보냄
      });
+     
 })
 
-module.exports = app
 
 
 
