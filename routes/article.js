@@ -46,9 +46,9 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       req.protocol + "://" + req.get("host") + articleImageUrlRaw;
 
     const userInfo = await Users.findOne({ userId });
-    console.log(userInfo);
-    console.log(userId);
+    console.log("[userInfo] ; ", userInfo);
     const userImage = userInfo.userImage;
+    console.log("[userImage] ; ", userImage);
 
     const createArticles = await Articles.create({
       articleTitle,
