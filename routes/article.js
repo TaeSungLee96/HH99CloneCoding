@@ -422,7 +422,9 @@ router.post("/like", authMiddleware, async (req, res) => {
         //남은 개수
         const totalLike = (await Likes.find({ articleNumber })).length;
         console.log("[delete]", totalLike);
-        return res.status(200).json({ result: "success", totalLike });
+        return res
+          .status(200)
+          .json({ result: "success", totalLike, status: false });
       } else {
         // 일치 하는 값이 없을 시 생성
         console.log("[만들어지나?]", articleNumber, user.userId);
@@ -430,7 +432,9 @@ router.post("/like", authMiddleware, async (req, res) => {
         // 총갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
         console.log("[create]", totalLike);
-        return res.status(200).json({ result: "success", totalLike });
+        return res
+          .status(200)
+          .json({ result: "success", totalLike, status: true });
       }
     }
   } catch (error) {
