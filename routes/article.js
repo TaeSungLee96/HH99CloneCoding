@@ -298,7 +298,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         //articleNumber가 일치하는 것
         const list = await Articles.find({ articleNumber });
         //List.userId가 같은 것만 가져옴
-        const users = await Users.find({ userId: list.userId });
+        const users = await Users.findOne({ userId: list.userId });
         console.log(users)
         const userImage = users.userImage;
         console.log(userImage)
