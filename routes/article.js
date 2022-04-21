@@ -39,14 +39,14 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     const articleCreatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
     // 게시글 이미지 받기
 
-    console.log("req.files", req.files);
     const imageInfo = req.files.articleImageUrl;
 
     const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
     const articleImageUrl =
       req.protocol + "://" + req.get("host") + articleImageUrlRaw;
 
-    console.log(articleImageUrl);
+    const userInfo = await Users.findOne({ userId });
+    const userImage = userInfo.userImage;
 
     const createArticles = await Articles.create({
       articleTitle,
@@ -54,6 +54,7 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       articleImageUrl,
       articlePrice,
       userId,
+      userImage,
       userNickname,
       userGu,
       userDong,
@@ -215,9 +216,7 @@ router.get("/list/:keyword", authMiddleware, async (req, res) => {
   try {
     //검색기능
     const user = res.locals.userDB;
-    console.log("1", req.params);
     const keyword = req.params.keyword;
-    console.log("keyword", req.params.keyword);
     //검색어가 있는 지 확인
     if (keyword) {
       //array생성
@@ -301,7 +300,7 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         //List.userId가 같은 것만 가져옴
         const users = await Users.findOne({ userId: list.userId });
         const userImage = users.userImage;
-        list.userImage = userImage;
+        list.userImage = userImage[0];
 
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
