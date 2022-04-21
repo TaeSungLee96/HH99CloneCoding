@@ -415,17 +415,20 @@ router.post("/like", authMiddleware, async (req, res) => {
     if (user) {
       //사용유자가 같은 상품에 좋아요를 했는지 확인
       const like = await Likes.find({ articleNumber, userId: user.userId });
+      console.log("[like]", like);
       if (like) {
         //일치하는 갚은 있으면 삭제
         await Likes.deleteOne({ articleNumber, userId: user.userId });
         //남은 개수
         const totalLike = (await Likes.find({ articleNumber })).length;
+        console.log("[delete]", totalLike);
         return res.status(200).json({ result: "success", totalLike });
       }
       // 일치 하는 값이 없을 시 생성
       await Likes.create({ articleNumber, userId: user.userId });
       // 총갯수
       const totalLike = (await Likes.find({ articleNumber })).length;
+      console.log("[create]", totalLike);
       return res.status(200).json({ result: "success", totalLike });
     }
     return res.status(401).json({
