@@ -43,9 +43,9 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
     console.log("----------------구분선--------------");
     console.log("<이미지 파일> :", req.files);
 
-    const imageInfo_1 = req.files.articleImageUrl1.articleImageUrl;
-    const imageInfo_2 = req.files.articleImageUrl2.articleImageUrl;
-    const imageInfo_3 = req.files.articleImageUrl3.articleImageUrl;
+    const imageInfo_1 = req.files.articleImageUrl1;
+    const imageInfo_2 = req.files.articleImageUrl2;
+    const imageInfo_3 = req.files.articleImageUrl3;
 
     console.log("----------------구분선2--------------");
     console.log("<imageInfo_1> :", imageInfo_1);
@@ -148,9 +148,9 @@ router.post(
     const { articleTitle, articleContent, articlePrice } = req.body;
 
     // 게시글 수정 이미지 받기
-    const imageInfo_1 = req.files.articleImageUrl1.articleImageUrl;
-    const imageInfo_2 = req.files.articleImageUrl2.articleImageUrl;
-    const imageInfo_3 = req.files.articleImageUrl3.articleImageUrl;
+    const imageInfo_1 = req.files.articleImageUrl1;
+    const imageInfo_2 = req.files.articleImageUrl2;
+    const imageInfo_3 = req.files.articleImageUrl3;
 
     // 사진 1개 업로드
     if (imageInfo_2 === undefined) {
