@@ -305,8 +305,10 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         //articleNumber가 일치하는 것
         const list = await Articles.find({ articleNumber });
         //List.userId가 같은 것만 가져옴
-        const users = await Users.findOne({ userId: list.userId });
+        const users = await Users.find({ userId: list.userId });
+        console.log(users)
         const userImage = users.userImage;
+        console.log(userImage)
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
         const List = { list, userImage, totalLike };
@@ -339,7 +341,7 @@ router.post("/like", authMiddleware, async (req, res) => {
     //articleNumber받는다
     const { articleNumber } = req.body;
     //유저 정보가 있는 지 확인
-    if (user.length > 0) {
+    if (user) {
       //사용유자가 같은 상품에 좋아요를 했는지 확인
       const like = await Likes.find({ articleNumber, userId: user.userId });
       if (like) {
