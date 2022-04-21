@@ -20,7 +20,6 @@ router.get("/mypage", authMiddleware, async (req, res) => {
 
     const userInfo = await Users.findOne({ userId });
     userInfo["userPassword"] = "";
-    console.log(userInfo);
 
     res.json({ userInfo });
   } catch (err) {
@@ -63,7 +62,6 @@ router.post("/mypage", authMiddleware, imgMiddleware, async (req, res) => {
 
     // 토큰 생성 및 발급
     const token = jwt.sign(payload, secret, options);
-    console.log("내가 토큰이다[2]", token);
 
     // 쿠키에 바로 저장시키기
     res.status(200).cookie("isLogin", token);

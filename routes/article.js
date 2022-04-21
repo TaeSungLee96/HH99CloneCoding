@@ -46,6 +46,8 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       req.protocol + "://" + req.get("host") + articleImageUrlRaw;
 
     const userInfo = await Users.findOne({ userId });
+    console.log(userInfo);
+    console.log(userId);
     const userImage = userInfo.userImage;
 
     const createArticles = await Articles.create({
@@ -62,7 +64,6 @@ router.post("/add", authMiddleware, imgMiddleware, async (req, res) => {
       articleCreatedAt,
     });
     res.status(200).json({ createArticles });
-    console.log(createArticles);
   } catch (err) {
     console.log(err);
     res.status(400).json({
@@ -103,10 +104,7 @@ router.post(
     const articleNumber = req.params.articleNumber;
     const { articleTitle, articleContent, articlePrice } = req.body;
 
-    console.log(req.body);
     // 게시글 수정 이미지 받기
-    console.log("사진 파일입니당 : ", req.files);
-
     const imageInfo = req.files.articleImageUrl;
 
     const articleImageUrlRaw = imageInfo.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
@@ -124,12 +122,7 @@ router.post(
           $set: { articleTitle, articleContent, articlePrice, articleImageUrl },
         }
       );
-      console.log({
-        articleTitle,
-        articleContent,
-        articleImageUrl,
-        articlePrice,
-      });
+
       res.json({ response: "success", msg: "게시글 수정이 완료되었습니다" });
       return;
     }
@@ -269,7 +262,6 @@ router.get("/list/:keyword", authMiddleware, async (req, res) => {
           msg: "조건에 일치하는 게 없습니다",
         });
       }
-      console.log(list);
       // 조건에 일치 시
       return res.status(200).json({
         list,
@@ -305,7 +297,6 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
         const List = { list, totalLike };
-        console.log("상세페이지", List);
 
         return res.status(200).json({
           List,
