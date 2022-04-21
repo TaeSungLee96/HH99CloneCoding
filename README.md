@@ -63,7 +63,7 @@
    - Socket.io를 활용해서 사이트에 접속하신 모든 유저들이 서로 이야기를 나눌 수 있도록 기능구현 하였습니다.
 
 ## 4. 실행화면
-[![누르면 됩니다!](https://img.youtube.com/vi/EKKKtSDHEJg/0.jpg)](https://youtu.be/EKKKtSDHEJg)
+[![누르면 됩니다!](https://img.youtube.com/vi/R10XYIzl1kA/0.jpg)](https://youtu.be/R10XYIzl1kA)
 
 ## 5. Trouble Shooting 🧨✨
 * Q1. 실시간 사용자의 위치를 기반으로한 검색기능을 어떤식으로 구현할 수 있을까?  
