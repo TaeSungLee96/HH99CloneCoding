@@ -9,6 +9,10 @@ const port = 3000;
 const mainRouter = require("./routes/main");
 const userRouter = require("./routes/user");
 const articleRouter = require("./routes/article");
+const server = require('http').createServer(app);
+const io = require("socket.io")(server, { cors: { origin: "*" } });
+// http server를 socket.io server로 upgrade한다
+
 
 // 접속 로그 남기기
 const requestMiddleware = (req, res, next) => {
@@ -38,7 +42,39 @@ app.use("/main", [mainRouter]);
 app.use("/user", [userRouter]);
 app.use("/article", [articleRouter]);
 
-// 서버 열기
-app.listen(port, () => {
-  console.log(port, "포트로 서버가 켜졌어요!");
+// // 서버 열기
+// app.listen(port, () => {
+//   console.log(port, "포트로 서버가 켜졌어요!");
+// });
+
+let room = ['room1', 'room2'];
+let a = 0;
+
+io.on('connection', (socket) => {
+  console.log(socket.id)
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+  socket.on('disconnect', function(){   //2-2
+    console.log('사용자 연결 종료 ::', socket.id);
 });
+socket.on('joinRoom', (num, name) => {
+    socket.join(room[num], () => {//배열 찾을 때 index 적용 어려울 듯
+      console.log(name + ' join a ' + room[num]);
+      io.to(room[num]).emit('joinRoom', num, name);
+    });
+  });
+
+
+  socket.on('chat message', (num, name, msg) => {
+    a = num;
+    io.to(room[a]).emit('chat message', name, msg);
+  });
+});
+
+server.listen(3000, function() {
+  console.log('Socket IO server listening on port 3000');
+});
+
+
