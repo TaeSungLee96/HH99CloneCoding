@@ -296,10 +296,13 @@ router.get("/detail/:articleNumber", authMiddleware, async (req, res) => {
     if (user) {
       if (articleNumber) {
         //articleNumber가 일치하는 것
-        const list = await Articles.find({ articleNumber });
+        const list = await Articles.findOne({ articleNumber });
+        console.log("이게 리스트다!!!!",list)
         //List.userId가 같은 것만 가져옴
         const users = await Users.findOne({ userId: list.userId });
+        console.log("이게 유저스다!!!!",users)
         const userImage = users.userImage;
+        console.log("이게 유저 이미지다!!!!",userImage)
         //좋아요 갯수
         const totalLike = (await Likes.find({ articleNumber })).length;
         const List = { list, userImage, totalLike };
