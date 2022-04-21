@@ -152,8 +152,8 @@ router.post(
     const imageInfo_2 = req.files.articleImageUrl2;
     const imageInfo_3 = req.files.articleImageUrl3;
 
-    // 사진 1개 업로드
-    if (imageInfo_2 === undefined) {
+    // 사진 1개 업로드(2번째 사진이 없다면)
+    if (!imageInfo_2) {
       const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
 
       var articleImageUrl_1 =
@@ -161,8 +161,8 @@ router.post(
       var articleImageUrl_2 = undefined;
       var articleImageUrl_3 = undefined;
     }
-    // 사진 2개 업로드
-    else if (imageInfo_3 === undefined) {
+    // 사진 2개 업로드(3번째 사진이 없다면)
+    else if (!imageInfo_3) {
       const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
       const articleImageUrlRaw_2 = imageInfo_2.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
 
@@ -172,8 +172,8 @@ router.post(
         req.protocol + "://" + req.get("host") + articleImageUrlRaw_2;
       var articleImageUrl_3 = undefined;
     }
-    // 사진 3개 업로드
-    else if (imageInfo_3 !== undefined) {
+    // 사진 3개 업로드(3번째 사진이 있다면)
+    else if (imageInfo_3) {
       const articleImageUrlRaw_1 = imageInfo_1.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
       const articleImageUrlRaw_2 = imageInfo_2.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
       const articleImageUrlRaw_3 = imageInfo_3.path.replace("uploads", ""); // img파일의 경로(원본 img파일은 uploads폴더에 저장되고있음)
